@@ -11,7 +11,12 @@ jobs:
           fetch-depth: 0
 
       - name: Push
+        env:
+          USERNAME: ${{secrets.BITBUCKET_USERNAME}}
+          PASSWORD: ${{sercrets.BITBUCKET_PASSWORD}}
+          SPACE_NAME: ${{secrets.BITBUCKET_SPACE_NAME}}
+          REPO_NAME: ${{secrets.BITBUCKET_REPO_NAME}}
         run: |
           echo "Starting push"
-          git push https://${{secrets.BITBUCKET_USERNAME}}:${{secrets.BITBUCKET_PASSWORD}}@bitbucket.org/${{secrets.BITBUCKET_SPACE_NAME}}/${{secrets.BITBUCKET_REPO_NAME}}.git
+          git push https://$USERNAME:$PASSWORD@bitbucket.org/$SPACE_NAME/$REPO_NAME.git
           echo "Push complete"
