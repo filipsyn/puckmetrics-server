@@ -1,0 +1,8 @@
+on: pull_request
+
+name: Validate pull request
+
+jobs:
+    build:
+        name: Build
+        uses: ./.github/workflows/kotlin-build.yaml

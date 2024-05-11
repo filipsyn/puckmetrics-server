@@ -1,0 +1,15 @@
+on:
+    push:
+        branches:
+            - master
+
+name: Validate and handle push to 'master' branch
+
+jobs:
+    build:
+        name: Build
+        uses: ./.github/workflows/kotlin-build.yaml
+
+    mirror:
+        name: Mirror
+        uses: ./.github/workflows/mirror.yaml
