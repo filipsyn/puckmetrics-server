@@ -1,19 +1,19 @@
 on: workflow_call
 
 jobs:
-    kotlin-build:
-        name: Build Project
-        runs-on: ubuntu-22.04
-        steps:
-            -   name: Check-out code
-                uses: actions/checkout@v4
+  kotlin-build:
+    name: Build Project
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check-out code
+        uses: actions/checkout@v4
 
-            -   name: Set up JDK
-                uses: actions/setup-java@v4
-                with:
-                    java-version: 21
-                    distribution: 'corretto'
-                    architecture: x64
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: 'corretto'
+          architecture: x64
 
-            -   name: Build project
-                run: ./gradlew build --no-daemon
+      - name: Build project
+        run: ./gradlew build --no-daemon

@@ -1,19 +1,17 @@
 on: workflow_call
 
 jobs:
-    mirror:
-        name: Mirror to Bitbucket
-        runs-on: ubuntu-22.04
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v2
-                with:
-                    fetch-depth: 0
+  mirror:
+    name: Mirror to Bitbucket
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-            -   name: Push
-                uses: heussd/mirror-to-bitbucket-github-action@v2
-                with:
-                    username: ${{ secrets.BITBUCKET_USERNAME }}
-                    spacename: ${{ secrets.BITBUCKET_SPACE_NAME }}
-                    repository: ${{ secrets.BITBUCKET_REPO_NAME }}
-                    password: ${{ secrets.BITBUCKET_PASSWORD }}
+      - name: Push
+        run: |
+          echo "Starting push"
+          git push https://${{secrets.BITBUCKET_USERNAME}}:${{secrets.BITBUCKET_PASSWORD}}@bitbucket.org/${{secrets.BITBUCKET_SPACE_NAME}}/${{secrets.BITBUCKET_REPO_NAME}}.git
+          echo "Push complete"
