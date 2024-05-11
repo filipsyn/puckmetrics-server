@@ -13,7 +13,7 @@ jobs:
       - name: Push
         env:
           USERNAME: ${{secrets.BITBUCKET_USERNAME}}
-          PASSWORD: ${{sercrets.BITBUCKET_PASSWORD}}
+          PASSWORD: ${{secrets.BITBUCKET_PASSWORD}}
           SPACE_NAME: ${{secrets.BITBUCKET_SPACE_NAME}}
           REPO_NAME: ${{secrets.BITBUCKET_REPO_NAME}}
         run: |
