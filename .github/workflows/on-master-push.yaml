@@ -3,6 +3,8 @@ on:
         branches:
             - master
 
+name: Validate push to 'master' branch
+
 jobs:
     build:
         name: Build
