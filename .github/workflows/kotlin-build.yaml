@@ -1,0 +1,19 @@
+on: workflow_dispatch
+
+jobs:
+    kotlin-build:
+        name: Build Kotlin Project
+        runs-on: ubuntu-22.04
+        steps:
+            -   name: Check-out code
+                uses: actions/checkout@4
+
+            -   name: Set up JDK
+                uses: actions/setup-java@v4
+                with:
+                    java-version: 21
+                    distribution: 'corretto'
+                    architecture: x64
+
+            -   name: Build project
+                run: ./gradlew build --no-daemon
