@@ -2,7 +2,7 @@ on: workflow_call
 
 jobs:
     kotlin-build:
-        name: Build Kotlin Project
+        name: Build Project
         runs-on: ubuntu-22.04
         steps:
             -   name: Check-out code
