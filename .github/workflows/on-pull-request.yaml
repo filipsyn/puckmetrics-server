@@ -6,4 +6,4 @@ on:
 jobs:
     build:
         name: Build
-        uses: ./kotlin-build.yaml
+        uses: ./.github/workflows/kotlin-build.yaml
