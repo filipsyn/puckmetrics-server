@@ -3,7 +3,7 @@ on:
         branches:
             - master
 
-name: Validate push to 'master' branch
+name: Validate and handle push to 'master' branch
 
 jobs:
     build:
