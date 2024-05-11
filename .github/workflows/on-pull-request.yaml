@@ -1,0 +1,9 @@
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+        name: Build
+        uses: ./kotlin-build.yaml
