@@ -13,4 +13,4 @@ jobs:
   mirror:
     name: Mirror
     uses: ./.github/workflows/mirror.yaml
-    if: jobs.build.result == 'success'
+    needs: build
