@@ -1,14 +1,6 @@
 on: workflow_call
 
 jobs:
-    mirror:
-        name: Mirror to Bitbucket
-        runs-on: ubuntu-22.04
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v2
-                with:
-                    fetch-depth: 0
   mirror:
     name: Mirror to Bitbucket
     runs-on: ubuntu-22.04
