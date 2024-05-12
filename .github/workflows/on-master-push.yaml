@@ -14,3 +14,4 @@ jobs:
     name: Mirror
     uses: ./.github/workflows/mirror.yaml
     needs: build
+    secrets: inherit
