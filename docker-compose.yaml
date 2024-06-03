@@ -1,0 +1,13 @@
+version: '3'
+services:
+  puckmetrics.database:
+    image: postgres:16
+    container_name: "puckmetrics-database"
+    environment:
+      - POSTGRES_USER=superuser
+      - POSTGRES_PASSWORD=secretpassword
+      - POSTGRES_DB=puckmetrics
+    ports:
+      - "8050:5432"
+    volumes:
+      - .containers/puckmetrics.database/data:/var/lib/postgresql/data
