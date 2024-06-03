@@ -1,4 +1,8 @@
 version: '3'
+
+volumes:
+  puckmetrics.database:
+
 services:
   puckmetrics.database:
     image: postgres:16
