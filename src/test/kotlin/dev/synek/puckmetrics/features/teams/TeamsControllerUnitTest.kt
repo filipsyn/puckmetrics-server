@@ -43,15 +43,18 @@ class TeamsControllerUnitTest {
 
     @Nested
     inner class GetTeamById {
+        private val validTeamId = 1L
+        private val invalidTeamId = 999L
+
         init {
-            every { teamsService.get(1L) } returns teams.first()
-            every { teamsService.get(999L) } returns null
+            every { teamsService.get(validTeamId) } returns teams.first()
+            every { teamsService.get(invalidTeamId) } returns null
         }
 
         @Test
         fun `responds 200 OK and with team info when present`() {
             // Act
-            val response = teamsController.getTeamById(1L)
+            val response = teamsController.getTeamById(validTeamId)
 
             // Assert
             assertAll(
@@ -64,7 +67,7 @@ class TeamsControllerUnitTest {
         @Test
         fun `responds 404 NOT FOUND when team is not found`() {
             // Act
-            val response = teamsController.getTeamById(999L)
+            val response = teamsController.getTeamById(invalidTeamId)
 
             // Assert
             assertAll(
