@@ -13,7 +13,11 @@ class TeamsController(
     private val teamsService: TeamsService,
 ) {
     @GetMapping(TeamsEndpointURLs.GET_ALL_TEAMS, produces = [APPLICATION_JSON])
-    fun getAllTeams(): List<Team> = teamsService.get().toList()
+    fun getAllTeams(): ResponseEntity<List<Team>> {
+        val teams = teamsService.get().toList()
+
+        return ResponseEntity.ok(teams)
+    }
 
     @GetMapping(TeamsEndpointURLs.GET_TEAM_BY_ID, produces = [APPLICATION_JSON])
     fun getTeamById(@PathVariable id: Long): ResponseEntity<Team?> {
