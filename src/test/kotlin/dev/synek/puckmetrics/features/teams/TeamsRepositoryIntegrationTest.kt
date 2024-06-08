@@ -65,4 +65,36 @@ class TeamsRepositoryIntegrationTest(
             assertThat(result).isEqualTo(teams)
         }
     }
+
+    @Nested
+    inner class FindById {
+        init {
+            teamsRepository.saveAll(teams)
+        }
+
+        @Test
+        fun `passing existing ID returns team`() {
+            // Arrange
+            val id = 1L
+
+            // Act
+            val result = teamsRepository.findById(id)
+
+            // Assert
+            assertThat(result.isPresent).isTrue()
+            assertThat(result.get()).isEqualTo(teams.find { team -> team.id == id })
+        }
+
+        @Test
+        fun `non-existing ID returns null`() {
+            // Arrange
+            val id = 999L
+
+            // Act
+            val result = teamsRepository.findById(id)
+
+            // Assert
+            assertThat(result.isPresent).isFalse()
+        }
+    }
 }
