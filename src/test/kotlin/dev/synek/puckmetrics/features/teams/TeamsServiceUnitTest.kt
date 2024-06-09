@@ -5,6 +5,7 @@ import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import java.util.*
 
 class TeamsServiceUnitTest {
@@ -82,4 +83,24 @@ class TeamsServiceUnitTest {
             assertThat(result).isNull()
         }
     }
+
+    @Nested
+    inner class Create {
+        @Test
+        fun `creates team`() {
+            // Arrange
+            val team = Team(location = "New York", name = "Rangers")
+            every { teamsRepository.save(team) } returns team
+
+            // Act
+            val result = teamsService.create(team)
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull },
+                { assertThat(result).isEqualTo(team) },
+            )
+        }
+    }
+
 }

@@ -10,5 +10,8 @@ class TeamsService(
     fun get(): Iterable<Team> = teamsRepository.findAll()
 
     fun get(id: Long): Team? = teamsRepository.findById(id).getOrNull()
-}
 
+    fun create(team: Team): Team? =
+        teamsRepository.save(team)
+
+}
