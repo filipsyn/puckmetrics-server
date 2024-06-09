@@ -103,4 +103,38 @@ class TeamsServiceUnitTest {
         }
     }
 
+    @Nested
+    inner class Update {
+        @Test
+        fun `returns null when ID is not found`() {
+            // Arrange
+            val invalidId = 999L
+            val team = Team(id = invalidId, location = "New York", name = "Rangers")
+            every { teamsRepository.findById(invalidId) } returns Optional.empty()
+
+            // Act
+            val result = teamsService.update(team)
+
+            // Assert
+            assertThat(result).isNull()
+        }
+
+        @Test
+        fun `successfully updates team`() {
+            // Arrange
+            val id = 1L
+            val team = Team(id = id, location = "New York", name = "Rangers")
+            every { teamsRepository.findById(id) } returns Optional.of(team)
+            every { teamsRepository.save(team) } returns team
+
+            // Act
+            val result = teamsService.update(team)
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull },
+                { assertThat(result).isEqualTo(team) }
+            )
+        }
+    }
 }

@@ -14,4 +14,16 @@ class TeamsService(
     fun create(team: Team): Team? =
         teamsRepository.save(team)
 
+    fun update(team: Team): Team? {
+        val existingTeam = teamsRepository.findById(team.id).getOrNull()
+            ?: return null
+
+        val updatedTeam = existingTeam.copy(
+            location = team.location,
+            name = team.name,
+            abbreviation = team.abbreviation
+        )
+
+        return teamsRepository.save(updatedTeam)
+    }
 }
