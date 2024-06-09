@@ -26,4 +26,12 @@ class TeamsService(
 
         return teamsRepository.save(updatedTeam)
     }
+
+    fun delete(id: Long): Boolean {
+        val team = teamsRepository.findById(id).getOrNull()
+            ?: return false
+
+        teamsRepository.delete(team)
+        return true
+    }
 }

@@ -137,4 +137,35 @@ class TeamsServiceUnitTest {
             )
         }
     }
+
+    @Nested
+    inner class Delete {
+        @Test
+        fun `returns false when ID is not found`() {
+            // Arrange
+            val invalidId = 999L
+            every { teamsRepository.findById(invalidId) } returns Optional.empty()
+
+            // Act
+            val result = teamsService.delete(invalidId)
+
+            // Assert
+            assertThat(result).isFalse()
+        }
+
+        @Test
+        fun `successfully deletes team`() {
+            // Arrange
+            val id = 1L
+            val team = Team(id = id, location = "New York", name = "Rangers")
+            every { teamsRepository.findById(id) } returns Optional.of(team)
+            every { teamsRepository.delete(team) } returns Unit
+
+            // Act
+            val result = teamsService.delete(id)
+
+            // Assert
+            assertThat(result).isTrue()
+        }
+    }
 }
