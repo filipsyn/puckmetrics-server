@@ -22,8 +22,9 @@ class TeamsController(
     }
 
     @GetMapping(TeamsEndpointURLs.GET_TEAM_BY_ID, produces = [APPLICATION_JSON])
-    fun getTeamById(@PathVariable id: Long): ResponseEntity<Team?> {
-        val team = teamsService.get(id) ?: return ResponseEntity.notFound().build()
+    fun getTeamById(@PathVariable id: Long): ResponseEntity<TeamResponse> {
+        val team = teamsService.get(id)?.toResponse()
+            ?: return ResponseEntity.notFound().build()
 
         return ResponseEntity.ok(team)
     }

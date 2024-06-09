@@ -56,6 +56,9 @@ class TeamsControllerUnitTest {
 
         @Test
         fun `responds 200 OK and with team info when present`() {
+            // Arrange
+            val expectedTeam = teams.first().toResponse()
+
             // Act
             val response = teamsController.getTeamById(validTeamId)
 
@@ -63,7 +66,7 @@ class TeamsControllerUnitTest {
             assertAll(
                 { assertThat(response).isNotNull },
                 { assertThat(response.statusCode).isEqualTo(HttpStatus.OK) },
-                { assertThat(response.body).isEqualTo(teams.first()) }
+                { assertThat(response.body).isEqualTo(expectedTeam) }
             )
         }
 
