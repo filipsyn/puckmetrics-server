@@ -29,6 +29,9 @@ class TeamsControllerUnitTest {
 
         @Test
         fun `returns list of all teams`() {
+            // Arrange
+            val expectedTeams = teams.map(TeamMapper::toResponse)
+
             // Act
             val result = teamsController.getAllTeams()
 
@@ -36,7 +39,7 @@ class TeamsControllerUnitTest {
             assertAll(
                 { assertThat(result).isNotNull },
                 { assertThat(result.statusCode).isEqualTo(HttpStatus.OK) },
-                { assertThat(result.body).isEqualTo(teams) }
+                { assertThat(result.body).isEqualTo(expectedTeams) }
             )
         }
     }
