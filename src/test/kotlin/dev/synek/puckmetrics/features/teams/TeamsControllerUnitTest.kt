@@ -30,7 +30,7 @@ class TeamsControllerUnitTest {
         @Test
         fun `returns list of all teams`() {
             // Arrange
-            val expectedTeams = teams.map(TeamMapper::toResponse)
+            val expectedTeams = teams.map(Team::toResponse)
 
             // Act
             val result = teamsController.getAllTeams()

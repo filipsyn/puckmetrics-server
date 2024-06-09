@@ -14,7 +14,9 @@ class TeamsController(
 ) {
     @GetMapping(TeamsEndpointURLs.GET_ALL_TEAMS, produces = [APPLICATION_JSON])
     fun getAllTeams(): ResponseEntity<List<TeamResponse>> {
-        val teams = teamsService.get().toList().map(TeamMapper::toResponse)
+        val teams = teamsService.get()
+            .toList()
+            .map(Team::toResponse)
 
         return ResponseEntity.ok(teams)
     }
