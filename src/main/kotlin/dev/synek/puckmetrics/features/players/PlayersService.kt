@@ -32,4 +32,12 @@ class PlayersService(
 
         return playersRepository.save(updatedPlayer)
     }
+
+    fun delete(id: Long): Boolean {
+        val player = playersRepository.findById(id).getOrNull()
+            ?: return false
+
+        playersRepository.delete(player)
+        return true
+    }
 }

@@ -148,4 +148,39 @@ class PlayersServiceUnitTest {
             )
         }
     }
+
+    @Nested
+    inner class Delete {
+        @Test
+        fun `returns false when player is not present`() {
+            // Arrange
+            val invalidPlayerId = 999L
+            every { playersRepository.findById(invalidPlayerId) } returns Optional.empty()
+            every { playersRepository.delete(any()) }
+
+            // Act
+            val result = playersService.delete(invalidPlayerId)
+
+            // Assert
+            assertThat(result).isFalse()
+        }
+
+        @Test
+        fun `deletes player and returns true`() {
+            // Arrange
+            val playerId = 1L
+            val player = Player(id = playerId, firstName = "Jaromir", lastName = "Jagr")
+            every { playersRepository.findById(playerId) } returns Optional.of(player)
+            every { playersRepository.delete(any()) } returns Unit
+
+            // Act
+            val result = playersService.delete(playerId)
+
+            // Assert
+            assertAll(
+                { assertThat(result).isTrue() },
+                { verify { playersRepository.delete(player) } }
+            )
+        }
+    }
 }
