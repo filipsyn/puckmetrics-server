@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
+import java.util.*
 
 class PlayersServiceUnitTest {
     private val playersRepository: PlayersRepository = mockk<PlayersRepository>()
@@ -50,6 +51,40 @@ class PlayersServiceUnitTest {
             assertAll(
                 { assertThat(result).isNotNull() },
                 { assertThat(result).isEqualTo(players) },
+            )
+        }
+    }
+
+    @Nested
+    inner class GetById {
+        @Test
+        fun `returns null when player is not present`() {
+            // Arrange
+            val invalidPlayerId = 999L
+            every { playersRepository.findById(invalidPlayerId) } returns Optional.empty()
+
+            // Act
+            val result = playersService.get(invalidPlayerId)
+
+            // Assert
+            assertThat(result).isNull()
+        }
+
+        @Test
+        fun `returns player when present`() {
+            // Arrange
+            val playerId = 1L
+            val player = Player(id = playerId, firstName = "Jaromir", lastName = "Jagr")
+
+            every { playersRepository.findById(playerId) } returns Optional.of(player)
+
+            // Act
+            val result = playersService.get(playerId)
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result).isEqualTo(player) },
             )
         }
     }
