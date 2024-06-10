@@ -13,4 +13,23 @@ class PlayersService(
 
     fun create(player: Player): Player =
         playersRepository.save(player)
+
+    fun update(id: Long, player: Player): Player? {
+        val existingPlayer = playersRepository.findById(id).getOrNull()
+            ?: return null
+
+        val updatedPlayer = existingPlayer.copy(
+            firstName = player.firstName,
+            lastName = player.lastName,
+            nationality = player.nationality,
+            birthCity = player.birthCity,
+            position = player.position,
+            birthDate = player.birthDate,
+            height = player.height,
+            weight = player.weight,
+            shoots = player.shoots
+        )
+
+        return playersRepository.save(updatedPlayer)
+    }
 }

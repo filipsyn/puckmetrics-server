@@ -109,4 +109,43 @@ class PlayersServiceUnitTest {
             )
         }
     }
+
+    @Nested
+    inner class Update {
+        @Test
+        fun `returns null when ID is invalid`() {
+            // Arrange
+            val invalidPlayerId = 999L
+            val player = Player(id = invalidPlayerId, firstName = "Jaromir", lastName = "Jagr")
+            every { playersRepository.findById(invalidPlayerId) } returns Optional.empty()
+
+            // Act
+            val result = playersService.update(invalidPlayerId, player)
+
+            // Assert
+            assertThat(result).isNull()
+        }
+
+        @Test
+        fun `updates player and returns him`() {
+            // Arrange
+            val playerId = 1L
+            val originalPlayer = Player(id = playerId, firstName = "Jaromir", lastName = "Jagr")
+            every { playersRepository.findById(playerId) } returns Optional.of(originalPlayer)
+
+            val updatedPlayer = originalPlayer.copy(firstName = "David", lastName = "Pastrnak")
+
+            every { playersRepository.save(updatedPlayer) } returns updatedPlayer
+
+            // Act
+            val result = playersService.update(playerId, updatedPlayer)
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result).isEqualTo(updatedPlayer) },
+                { verify { playersRepository.save(updatedPlayer) } }
+            )
+        }
+    }
 }
