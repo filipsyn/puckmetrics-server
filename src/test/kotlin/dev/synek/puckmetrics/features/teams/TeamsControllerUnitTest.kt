@@ -89,13 +89,6 @@ class TeamsControllerUnitTest {
             every { teamsService.create(any()) } returns teams.first()
         }
 
-        private val createRequest = CreateUpdateTeamRequest(
-            location = "New York",
-            name = "Rangers",
-            abbreviation = "NYR",
-            franchiseId = null
-        )
-
         @Test
         fun `responds 201 CREATED and with team info when created`() {
             // Arrange
