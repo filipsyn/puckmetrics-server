@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
@@ -210,6 +211,134 @@ class TeamsControllerEndToEndTest(
                 content { contentType("application/json") }
                 jsonPath("$.location") { value("New York") }
                 jsonPath("$.name") { value("Rangers") }
+            }
+        }
+    }
+
+    @Nested
+    inner class UpdateTeam {
+        @Test
+        fun `fails when passed invalid team ID`() {
+            // Arrange
+            val invalidId = 999L
+            val requestBody =
+                """
+                {
+                    "location": "New York",
+                    "name": "Rangers",
+                    "abbreviation": "NYR"
+                }
+                """.trimIndent()
+
+            // Act
+            val result = mockMvc.put("$baseUrl/$invalidId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+            // Assert
+            result.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        fun `fails when name is missing`() {
+            // Arrange
+            val teamId = 100L
+            val requestBody =
+                """
+                {
+                    "location": "New York",
+                    "abbreviation": "NYR"
+                }
+                """.trimIndent()
+
+            // Act
+            val result = mockMvc.put("$baseUrl/$teamId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `fails when location is missing`() {
+            // Arrange
+            val teamId = 100L
+            val requestBody =
+                """
+                {
+                    "name": "Rangers",
+                    "abbreviation": "NYR"
+                }
+                """.trimIndent()
+
+            // Act
+            val result = mockMvc.put("$baseUrl/$teamId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `fails when abbreviation is missing`() {
+            // Arrange
+            val teamId = 100L
+            val requestBody =
+                """
+                {
+                    "location": "New York",
+                    "name": "Rangers"
+                }
+                """.trimIndent()
+
+            // Act
+            val result = mockMvc.put("$baseUrl/$teamId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `updates an existing team`() {
+            // Arrange
+            val teamId = 100L
+            val requestBody =
+                """
+                {
+                    "location": "Nuevo York",
+                    "name": "El Rangers",
+                    "abbreviation": "RAN"
+                }
+                """.trimIndent()
+
+            // Act
+            val result = mockMvc.put("$baseUrl/$teamId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+            // Assert
+            result.andExpect {
+                status { isAccepted() }
+                content { contentType("application/json") }
+                jsonPath("$.location") { value("Nuevo York") }
+                jsonPath("$.name") { value("El Rangers") }
             }
         }
     }
