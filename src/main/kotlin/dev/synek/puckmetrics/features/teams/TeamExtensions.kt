@@ -5,3 +5,9 @@ fun Team.toResponse() = TeamResponse(
     location = location,
     name = name,
 )
+
+fun CreateUpdateTeamRequest.toEntity() = Team(
+    location = location,
+    name = name,
+    abbreviation = abbreviation,
+)

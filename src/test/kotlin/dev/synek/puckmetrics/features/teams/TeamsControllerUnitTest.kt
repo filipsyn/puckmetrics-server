@@ -82,4 +82,40 @@ class TeamsControllerUnitTest {
             )
         }
     }
+
+    @Nested
+    inner class CreateTeam {
+        init {
+            every { teamsService.create(any()) } returns teams.first()
+        }
+
+        private val createRequest = CreateUpdateTeamRequest(
+            location = "New York",
+            name = "Rangers",
+            abbreviation = "NYR",
+            franchiseId = null
+        )
+
+        @Test
+        fun `responds 201 CREATED and with team info when created`() {
+            // Arrange
+            val request = CreateUpdateTeamRequest(
+                location = "New York",
+                name = "Rangers",
+                abbreviation = "NYR",
+                franchiseId = null
+            )
+            val expectedTeam = teams.first().toResponse()
+
+            // Act
+            val response = teamsController.createTeam(request)
+
+            // Assert
+            assertAll(
+                { assertThat(response).isNotNull },
+                { assertThat(response.statusCode).isEqualTo(HttpStatus.CREATED) },
+                { assertThat(response.body).isEqualTo(expectedTeam) },
+            )
+        }
+    }
 }

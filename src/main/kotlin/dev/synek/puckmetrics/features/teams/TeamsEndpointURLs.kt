@@ -6,4 +6,7 @@ object TeamsEndpointURLs {
     const val GET_ALL_TEAMS = ""
 
     const val GET_TEAM_BY_ID = "/{id}"
+
+    const val CREATE_TEAM = ""
+
 }

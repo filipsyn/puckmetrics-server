@@ -1,11 +1,10 @@
 package dev.synek.puckmetrics.features.teams
 
 import dev.synek.puckmetrics.shared.ControllerConstants.APPLICATION_JSON
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.net.URI
 
 @RestController
 @RequestMapping(TeamsEndpointURLs.CONTROLLER_ROOT)
@@ -28,4 +27,21 @@ class TeamsController(
 
         return ResponseEntity.ok(team)
     }
+
+    @PostMapping(
+        TeamsEndpointURLs.CREATE_TEAM,
+        consumes = [APPLICATION_JSON],
+        produces = [APPLICATION_JSON]
+    )
+    @Valid
+    fun createTeam(
+        @RequestBody @Valid request: CreateUpdateTeamRequest
+    ): ResponseEntity<TeamResponse> {
+        val team = request.toEntity()
+
+        val createdTeam = teamsService.create(team)
+
+        return ResponseEntity.created(URI.create("/teams/${createdTeam.id}")).body(createdTeam.toResponse())
+    }
+
 }

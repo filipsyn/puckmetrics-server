@@ -11,7 +11,7 @@ class TeamsService(
 
     fun get(id: Long): Team? = teamsRepository.findById(id).getOrNull()
 
-    fun create(team: Team): Team? =
+    fun create(team: Team): Team =
         teamsRepository.save(team)
 
     fun update(team: Team): Team? {

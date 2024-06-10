@@ -10,13 +10,13 @@ import jakarta.persistence.Id
 data class Team(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
+    val id: Long? = null,
 
-    val franchiseId: Long = 0L,
+    val franchiseId: Long? = null,
 
     val location: String? = null,
 
     val name: String? = null,
 
-    val abbreviation: String? = null,
+    val abbreviation: String = "",
 )
