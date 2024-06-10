@@ -11,4 +11,6 @@ class PlayersService(
     fun get(id: Long): Player? =
         playersRepository.findById(id).getOrNull()
 
+    fun create(player: Player): Player =
+        playersRepository.save(player)
 }

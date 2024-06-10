@@ -2,6 +2,7 @@ package dev.synek.puckmetrics.features.players
 
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -85,6 +86,26 @@ class PlayersServiceUnitTest {
             assertAll(
                 { assertThat(result).isNotNull() },
                 { assertThat(result).isEqualTo(player) },
+            )
+        }
+    }
+
+    @Nested
+    inner class Create {
+        @Test
+        fun `creates player`() {
+            // Arrange
+            val player = Player(firstName = "Jaromir", lastName = "Jagr")
+            every { playersRepository.save(player) } returns player
+
+            // Act
+            val result = playersService.create(player)
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result).isEqualTo(player) },
+                { verify { playersRepository.save(player) } }
             )
         }
     }
