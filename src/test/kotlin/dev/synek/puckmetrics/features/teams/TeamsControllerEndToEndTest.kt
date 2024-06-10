@@ -80,6 +80,35 @@ class TeamsControllerEndToEndTest(
                     jsonPath("$[5].name") { value("Maple Leafs") }
                 }
         }
+    }
 
+    @Nested
+    inner class GetTeamById {
+        @Test
+        fun `returns 404 when not found`() {
+            // Arrange
+            val invalidId = 999L
+
+            // Act & Assert
+            mockMvc.get("$baseUrl/$invalidId")
+                .andExpect {
+                    status { isNotFound() }
+                }
+        }
+
+        @Test
+        fun `returns team when found`() {
+            // Arrange
+            val teamId = 1L
+
+            // Act & Assert
+            mockMvc.get("$baseUrl/$teamId")
+                .andExpect {
+                    status { isOk() }
+                    content { contentType("application/json") }
+                    jsonPath("$.location") { value("Boston") }
+                    jsonPath("$.name") { value("Bruins") }
+                }
+        }
     }
 }
