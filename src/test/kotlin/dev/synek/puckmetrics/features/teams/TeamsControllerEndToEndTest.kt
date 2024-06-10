@@ -10,10 +10,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.jdbc.Sql
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.put
+import org.springframework.test.web.servlet.*
 import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
@@ -339,6 +336,37 @@ class TeamsControllerEndToEndTest(
                 content { contentType("application/json") }
                 jsonPath("$.location") { value("Nuevo York") }
                 jsonPath("$.name") { value("El Rangers") }
+            }
+        }
+    }
+
+    @Nested
+    inner class DeleteTeam {
+        @Test
+        fun `fails when passed invalid team ID`() {
+            // Arrange
+            val invalidId = 999L
+
+            // Act
+            val result = mockMvc.delete("$baseUrl/$invalidId")
+
+            // Assert
+            result.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        fun `deletes an existing team`() {
+            // Arrange
+            val teamId = 100L
+
+            // Act
+            val result = mockMvc.delete("$baseUrl/$teamId")
+
+            // Assert
+            result.andExpect {
+                status { isNoContent() }
             }
         }
     }
