@@ -9,4 +9,7 @@ object TeamsEndpointURLs {
 
     const val CREATE_TEAM = ""
 
+    const val UPDATE_TEAM = "/{id}"
+
+    const val DELETE_TEAM = "/{id}"
 }

@@ -44,4 +44,24 @@ class TeamsController(
         return ResponseEntity.created(URI.create("/teams/${createdTeam.id}")).body(createdTeam.toResponse())
     }
 
+    @PutMapping(
+        TeamsEndpointURLs.UPDATE_TEAM,
+        consumes = [APPLICATION_JSON],
+        produces = [APPLICATION_JSON]
+    )
+    @Valid
+    fun updateTeam(
+        @PathVariable id: Long,
+        @RequestBody @Valid request: CreateUpdateTeamRequest
+    ): ResponseEntity<TeamResponse> {
+        val team = request.toEntity()
+
+        val updatedTeam = teamsService.update(id, team)
+            ?: return ResponseEntity.notFound().build()
+
+        return ResponseEntity
+            .accepted()
+            .body(updatedTeam.toResponse())
+    }
+
 }
