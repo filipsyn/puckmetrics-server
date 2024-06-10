@@ -52,6 +52,12 @@ tasks.withType(KotlinCompile).configureEach {
     }
 }
 
-tasks.named('test') {
+tasks.named('test', Test) {
     useJUnitPlatform()
+    testLogging {
+        events = ["PASSED", "FAILED", "SKIPPED"]
+        showStandardStreams = true
+        exceptionFormat = "full"
+    }
+    maxParallelForks = Runtime.getRuntime().availableProcessors()
 }

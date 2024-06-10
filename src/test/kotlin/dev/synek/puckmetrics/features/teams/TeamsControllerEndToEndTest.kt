@@ -1,50 +1,25 @@
 package dev.synek.puckmetrics.features.teams
 
+import dev.synek.puckmetrics.common.BaseIntegrationTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.*
 import org.springframework.transaction.annotation.Transactional
-import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import org.testcontainers.utility.DockerImageName
 
 @Testcontainers
-@SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
 @AutoConfigureMockMvc
 @Sql("/test-data/teams.sql")
 class TeamsControllerEndToEndTest(
     @Autowired private val mockMvc: MockMvc
-) {
-    companion object {
-        @Container
-        val postgresContainer = PostgreSQLContainer<Nothing>(
-            DockerImageName.parse("postgres:16")
-        ).apply {
-            withDatabaseName("integration-tests-db")
-            withUsername("test-user")
-            withPassword("test-password")
-        }
-
-        @JvmStatic
-        @DynamicPropertySource
-        fun datasourceConfig(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url", postgresContainer::getJdbcUrl)
-            registry.add("spring.datasource.password", postgresContainer::getPassword)
-            registry.add("spring.datasource.username", postgresContainer::getUsername)
-        }
-    }
-
+) : BaseIntegrationTest() {
     private val baseUrl = "/teams"
 
     @Nested
