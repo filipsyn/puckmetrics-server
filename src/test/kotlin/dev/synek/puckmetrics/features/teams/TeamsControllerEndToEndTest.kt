@@ -163,6 +163,29 @@ class TeamsControllerEndToEndTest(
         }
 
         @Test
+        fun `fails when abbreviation is missing`() {
+            // Arrange
+            val requestBody =
+                """
+                {
+                    "location": "New York",
+                    "name": "Rangers"
+                }
+                """.trimIndent()
+
+            // Act
+            val result = mockMvc.post(baseUrl) {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
         fun `creates a new team`() {
             // Arrange
             val requestBody =
