@@ -1,5 +1,6 @@
 package dev.synek.puckmetrics.features.teams
 
+import dev.synek.puckmetrics.contracts.CreateUpdateTeamRequest
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat

@@ -1,6 +1,6 @@
-package dev.synek.puckmetrics.features.teams
+package dev.synek.puckmetrics.contracts
 
-data class TeamResponse(
+data class TeamInfoResponse(
     val id: Long?,
     val location: String?,
     val name: String?,

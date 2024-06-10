@@ -1,5 +1,7 @@
 package dev.synek.puckmetrics.features.teams
 
+import dev.synek.puckmetrics.contracts.CreateUpdateTeamRequest
+import dev.synek.puckmetrics.contracts.TeamInfoResponse
 import dev.synek.puckmetrics.shared.ControllerConstants.APPLICATION_JSON
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
@@ -12,7 +14,7 @@ class TeamsController(
     private val teamsService: TeamsService,
 ) {
     @GetMapping(TeamsEndpointURLs.GET_ALL_TEAMS, produces = [APPLICATION_JSON])
-    fun getAllTeams(): ResponseEntity<List<TeamResponse>> {
+    fun getAllTeams(): ResponseEntity<List<TeamInfoResponse>> {
         val teams = teamsService.get()
             .toList()
             .map(Team::toResponse)
@@ -21,7 +23,7 @@ class TeamsController(
     }
 
     @GetMapping(TeamsEndpointURLs.GET_TEAM_BY_ID, produces = [APPLICATION_JSON])
-    fun getTeamById(@PathVariable id: Long): ResponseEntity<TeamResponse> {
+    fun getTeamById(@PathVariable id: Long): ResponseEntity<TeamInfoResponse> {
         val team = teamsService.get(id)?.toResponse()
             ?: return ResponseEntity.notFound().build()
 
@@ -36,7 +38,7 @@ class TeamsController(
     @Valid
     fun createTeam(
         @RequestBody @Valid request: CreateUpdateTeamRequest
-    ): ResponseEntity<TeamResponse> {
+    ): ResponseEntity<TeamInfoResponse> {
         val team = request.toEntity()
 
         val createdTeam = teamsService.create(team)
@@ -53,7 +55,7 @@ class TeamsController(
     fun updateTeam(
         @PathVariable id: Long,
         @RequestBody @Valid request: CreateUpdateTeamRequest
-    ): ResponseEntity<TeamResponse> {
+    ): ResponseEntity<TeamInfoResponse> {
         val team = request.toEntity()
 
         val updatedTeam = teamsService.update(id, team)

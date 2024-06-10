@@ -1,6 +1,9 @@
 package dev.synek.puckmetrics.features.teams
 
-fun Team.toResponse() = TeamResponse(
+import dev.synek.puckmetrics.contracts.CreateUpdateTeamRequest
+import dev.synek.puckmetrics.contracts.TeamInfoResponse
+
+fun Team.toResponse() = TeamInfoResponse(
     id = id,
     location = location,
     name = name,

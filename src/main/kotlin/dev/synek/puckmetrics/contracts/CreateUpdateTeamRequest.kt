@@ -1,4 +1,4 @@
-package dev.synek.puckmetrics.features.teams
+package dev.synek.puckmetrics.contracts
 
 import jakarta.validation.constraints.NotEmpty
 
