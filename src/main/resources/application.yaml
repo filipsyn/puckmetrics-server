@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: "puckmetrics"
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: superuser
+    password: secretpassword
+    url: jdbc:postgresql://localhost:8050/puckmetrics
+  liquibase:
+    change-log: classpath:db.changelog/db.changelog-master.yaml
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 8000
+
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
+        type: trace
+        stat: debug
+
