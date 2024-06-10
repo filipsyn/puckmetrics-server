@@ -64,4 +64,14 @@ class TeamsController(
             .body(updatedTeam.toResponse())
     }
 
+    @DeleteMapping(TeamsEndpointURLs.DELETE_TEAM)
+    fun deleteTeam(@PathVariable id: Long): ResponseEntity<Unit> {
+        val isDeleted = teamsService.delete(id)
+
+        if (!isDeleted) {
+            return ResponseEntity.notFound().build()
+        }
+
+        return ResponseEntity.noContent().build()
+    }
 }
