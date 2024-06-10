@@ -16,4 +16,6 @@ jobs:
           architecture: x64
 
       - name: Build project
+        env:
+          SPRING_PROFILES_ACTIVE: ci
         run: ./gradlew build --no-daemon
