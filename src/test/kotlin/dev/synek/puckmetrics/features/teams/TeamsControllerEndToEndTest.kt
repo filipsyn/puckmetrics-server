@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
@@ -109,6 +111,83 @@ class TeamsControllerEndToEndTest(
                     jsonPath("$.location") { value("Boston") }
                     jsonPath("$.name") { value("Bruins") }
                 }
+        }
+    }
+
+    @Nested
+    inner class CreateTeam {
+        @Test
+        fun `fails when name is missing`() {
+            // Arrange
+            val requestBody =
+                """
+                {
+                    "location": "New York",
+                    "abbreviation": "NYR"
+                }
+                """.trimIndent()
+
+            // Act
+            val result = mockMvc.post(baseUrl) {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `fails when location is missing`() {
+            // Arrange
+            val requestBody =
+                """
+                {
+                    "name": "Rangers",
+                    "abbreviation": "NYR"
+                }
+                """.trimIndent()
+
+            // Act
+            val result = mockMvc.post(baseUrl) {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `creates a new team`() {
+            // Arrange
+            val requestBody =
+                """
+                {
+                    "location": "New York",
+                    "name": "Rangers",
+                    "abbreviation": "NYR"
+                }
+                """.trimIndent()
+
+            // Act
+            val result = mockMvc.post(baseUrl) {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+            // Assert
+            result.andExpect {
+                status { isCreated() }
+                header { exists("Location") }
+                content { contentType("application/json") }
+                jsonPath("$.location") { value("New York") }
+                jsonPath("$.name") { value("Rangers") }
+            }
         }
     }
 }
