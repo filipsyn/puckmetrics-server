@@ -113,7 +113,7 @@ class TeamsServiceUnitTest {
             every { teamsRepository.findById(invalidId) } returns Optional.empty()
 
             // Act
-            val result = teamsService.update(team)
+            val result = teamsService.update(invalidId, team)
 
             // Assert
             assertThat(result).isNull()
@@ -128,7 +128,7 @@ class TeamsServiceUnitTest {
             every { teamsRepository.save(team) } returns team
 
             // Act
-            val result = teamsService.update(team)
+            val result = teamsService.update(id, team)
 
             // Assert
             assertAll(
