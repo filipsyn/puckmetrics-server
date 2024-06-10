@@ -1,17 +1,17 @@
 INSERT INTO public.team (id, franchise_id, location, name, abbreviation)
-VALUES (1, 1, 'Boston', 'Bruins', 'BOS');
+VALUES (100, 100, 'Boston', 'Bruins', 'BOS');
 
 INSERT INTO public.team (id, franchise_id, location, name, abbreviation)
-VALUES (2, 2, 'Chicago', 'Blackhawks', 'CHI');
+VALUES (200, 200, 'Chicago', 'Blackhawks', 'CHI');
 
 INSERT INTO public.team (id, franchise_id, location, name, abbreviation)
-VALUES (3, 3, 'Detroit', 'Red Wings', 'DET');
+VALUES (300, 300, 'Detroit', 'Red Wings', 'DET');
 
 INSERT INTO public.team (id, franchise_id, location, name, abbreviation)
-VALUES (4, 4, 'Montreal', 'Canadiens', 'MTL');
+VALUES (400, 400, 'Montreal', 'Canadiens', 'MTL');
 
 INSERT INTO public.team (id, franchise_id, location, name, abbreviation)
-VALUES (5, 5, 'New York', 'Rangers', 'NYR');
+VALUES (500, 500, 'New York', 'Rangers', 'NYR');
 
 INSERT INTO public.team (id, franchise_id, location, name, abbreviation)
-VALUES (6, 6, 'Toronto', 'Maple Leafs', 'TOR');
+VALUES (600, 600, 'Toronto', 'Maple Leafs', 'TOR');

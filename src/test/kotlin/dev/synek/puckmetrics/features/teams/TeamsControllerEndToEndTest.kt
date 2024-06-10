@@ -99,7 +99,7 @@ class TeamsControllerEndToEndTest(
         @Test
         fun `returns team when found`() {
             // Arrange
-            val teamId = 1L
+            val teamId = 100L
 
             // Act & Assert
             mockMvc.get("$baseUrl/$teamId")
