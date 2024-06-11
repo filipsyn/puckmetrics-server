@@ -1,7 +1,9 @@
 package dev.synek.puckmetrics.features.players
 
+import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
+@Service
 class PlayersService(
     private val playersRepository: PlayersRepository
 ) {
