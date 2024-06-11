@@ -1,6 +1,7 @@
 package dev.synek.puckmetrics.features.players
 
 import dev.synek.puckmetrics.contracts.CreateUpdatePlayerRequest
+import dev.synek.puckmetrics.contracts.PlayerDetailsResponse
 import dev.synek.puckmetrics.contracts.PlayerInfoResponse
 import dev.synek.puckmetrics.shared.ControllerConstants.APPLICATION_JSON
 import jakarta.validation.Valid
@@ -16,7 +17,7 @@ class PlayersController(
     fun getAllPlayers(): ResponseEntity<List<PlayerInfoResponse>> {
         val players = playersService.get()
             .toList()
-            .map(Player::toResponse)
+            .map(Player::toInfoResponse)
 
         return ResponseEntity.ok(players)
     }
@@ -24,11 +25,11 @@ class PlayersController(
     @GetMapping(PlayersEndpointURLs.GET_PLAYER_BY_ID, produces = [APPLICATION_JSON])
     fun getPlayerById(
         @PathVariable id: Long,
-    ): ResponseEntity<PlayerInfoResponse> {
+    ): ResponseEntity<PlayerDetailsResponse> {
         val player = playersService.get(id)
             ?: return ResponseEntity.notFound().build()
 
-        return ResponseEntity.ok(player.toResponse())
+        return ResponseEntity.ok(player.toDetailsResponse())
     }
 
     @PostMapping(
@@ -38,10 +39,10 @@ class PlayersController(
     )
     fun createPlayer(
         @RequestBody @Valid request: CreateUpdatePlayerRequest,
-    ): ResponseEntity<PlayerInfoResponse> {
+    ): ResponseEntity<PlayerDetailsResponse> {
         val player = playersService.create(request.toEntity())
 
-        return ResponseEntity.ok(player.toResponse())
+        return ResponseEntity.ok(player.toDetailsResponse())
     }
 }
 

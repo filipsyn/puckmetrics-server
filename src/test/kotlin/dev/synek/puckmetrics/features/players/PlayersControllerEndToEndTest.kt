@@ -95,6 +95,13 @@ class PlayersControllerEndToEndTest(
                 content { contentType("application/json") }
                 jsonPath("$.firstName") { value("Jaromir") }
                 jsonPath("$.lastName") { value("Jagr") }
+                jsonPath("$.nationality") { value("CZE") }
+                jsonPath("$.birthCity") { value("Kladno") }
+                jsonPath("$.position") { value("RW") }
+                jsonPath("$.birthDate") { value("1972-02-15T00:00:00.000+00:00") }
+                jsonPath("$.height") { value("190") }
+                jsonPath("$.weight") { value("230") }
+                jsonPath("$.shoots") { value("L") }
             }
         }
     }
@@ -500,8 +507,16 @@ class PlayersControllerEndToEndTest(
             response.andExpect {
                 status { isOk() }
                 content { contentType("application/json") }
+                jsonPath("$.id") { value("1") }
                 jsonPath("$.firstName") { value("Wayne") }
                 jsonPath("$.lastName") { value("Gretzky") }
+                jsonPath("$.nationality") { value("CAN") }
+                jsonPath("$.birthCity") { value("Brantford") }
+                jsonPath("$.position") { value("C") }
+                jsonPath("$.birthDate") { value("1961-01-26T00:00:00.000+00:00") }
+                jsonPath("$.height") { value("185") }
+                jsonPath("$.weight") { value("185") }
+                jsonPath("$.shoots") { value("L") }
             }
         }
     }
