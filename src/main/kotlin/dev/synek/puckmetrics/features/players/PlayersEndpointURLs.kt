@@ -10,4 +10,6 @@ object PlayersEndpointURLs {
     const val CREATE_PLAYER = ""
 
     const val UPDATE_PLAYER = "/{id}"
+
+    const val DELETE_PLAYER = "/{id}"
 }

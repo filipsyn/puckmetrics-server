@@ -61,5 +61,18 @@ class PlayersController(
 
         return ResponseEntity.accepted().body(updatedPlayer.toDetailsResponse())
     }
+
+    @DeleteMapping(PlayersEndpointURLs.DELETE_PLAYER)
+    fun deletePlayer(
+        @PathVariable id: Long,
+    ): ResponseEntity<Unit> {
+        val isDeleted = playersService.delete(id)
+
+        if (!isDeleted) {
+            return ResponseEntity.notFound().build()
+        }
+
+        return ResponseEntity.noContent().build()
+    }
 }
 

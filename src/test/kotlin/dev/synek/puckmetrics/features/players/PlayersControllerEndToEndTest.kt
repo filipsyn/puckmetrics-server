@@ -10,10 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.MediaType
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.jdbc.Sql
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.put
+import org.springframework.test.web.servlet.*
 import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.junit.jupiter.Testcontainers
 
@@ -975,6 +972,38 @@ class PlayersControllerEndToEndTest(
                 jsonPath("$.height") { value("182") }
                 jsonPath("$.weight") { value("194") }
                 jsonPath("$.shoots") { value("R") }
+            }
+        }
+    }
+
+    @Nested
+    inner class DeletePlayer {
+        @Test
+        fun `responds with 404 when player with provided ID does not exist`() {
+            // Arrange
+            val invalidId = 999L
+
+            // Act
+            val response = mockMvc.delete("$baseUrl/$invalidId")
+
+            // Assert
+            response.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        @Rollback
+        fun `deletes a player`() {
+            // Arrange
+            val playerId = 100L
+
+            // Act
+            val response = mockMvc.delete("$baseUrl/$playerId")
+
+            // Assert
+            response.andExpect {
+                status { isNoContent() }
             }
         }
     }
