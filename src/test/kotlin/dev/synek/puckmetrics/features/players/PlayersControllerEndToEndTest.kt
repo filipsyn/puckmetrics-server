@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.junit.jupiter.Testcontainers
 
@@ -517,6 +518,463 @@ class PlayersControllerEndToEndTest(
                 jsonPath("$.height") { value("185") }
                 jsonPath("$.weight") { value("185") }
                 jsonPath("$.shoots") { value("L") }
+            }
+        }
+    }
+
+    @Nested
+    inner class UpdatePlayer {
+        @Test
+        fun `responds with 404 when player with provided ID does not exist`() {
+            // Arrange
+            val invalidId = 999L
+            val request = """
+                {
+                    "firstName": "Wayne",
+                    "lastName": "Gretzky",
+                    "nationality": "CAN",
+                    "birthCity": "Brantford",
+                    "position": "C",
+                    "birthDate": "1961-01-26",
+                    "height": 185,
+                    "weight": 185,
+                    "shoots": "R"
+                    }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$invalidId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when first name is missing`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when last name is missing`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when nationality is missing`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when birth city is missing`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when position is missing`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when birth date is missing`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "height": 182,
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when birth date is in the future`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "3000-05-25",
+                "height": 182,
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when height is too low`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": ${Constants.Player.MINIMUM_HEIGHT - 1},
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when height is too high`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": ${Constants.Player.MAXIMUM_HEIGHT + 1},
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when weight is too low`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": ${Constants.Player.MINIMUM_WEIGHT - 1},
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when weight is too high`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": ${Constants.Player.MAXIMUM_WEIGHT + 1}
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when information about dominant hand is missing`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": 194,
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `responds with 400 when information about dominant hand is too long`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": 194,
+                "shoots": "RIGHT"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `updates a player`() {
+            // Arrange
+            val playerId = 100L
+            val request = """
+            {
+                "firstName": "David",
+                "lastName": "Pastrnak",
+                "nationality": "CZE",
+                "birthCity": "Havirov",
+                "position": "C",
+                "birthDate": "1996-05-25",
+                "height": 182,
+                "weight": 194,
+                "shoots": "R"
+            }
+            """.trimIndent()
+
+            // Act
+            val response = mockMvc.put("$baseUrl/$playerId") {
+                contentType = MediaType.APPLICATION_JSON
+                content = request
+            }
+
+            // Assert
+            response.andExpect {
+                status { isAccepted() }
+                content { contentType("application/json") }
+                jsonPath("$.id") { value("100") }
+                jsonPath("$.firstName") { value("David") }
+                jsonPath("$.lastName") { value("Pastrnak") }
+                jsonPath("$.nationality") { value("CZE") }
+                jsonPath("$.birthCity") { value("Havirov") }
+                jsonPath("$.position") { value("C") }
+                jsonPath("$.birthDate") { value("1996-05-25T00:00:00.000+00:00") }
+                jsonPath("$.height") { value("182") }
+                jsonPath("$.weight") { value("194") }
+                jsonPath("$.shoots") { value("R") }
             }
         }
     }

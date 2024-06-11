@@ -44,5 +44,22 @@ class PlayersController(
 
         return ResponseEntity.ok(player.toDetailsResponse())
     }
+
+    @PutMapping(
+        PlayersEndpointURLs.UPDATE_PLAYER,
+        consumes = [APPLICATION_JSON],
+        produces = [APPLICATION_JSON]
+    )
+    fun updatePlayer(
+        @PathVariable id: Long,
+        @RequestBody @Valid request: CreateUpdatePlayerRequest,
+    ): ResponseEntity<PlayerDetailsResponse> {
+        val player = request.toEntity()
+
+        val updatedPlayer = playersService.update(id, player)
+            ?: return ResponseEntity.notFound().build()
+
+        return ResponseEntity.accepted().body(updatedPlayer.toDetailsResponse())
+    }
 }
 
