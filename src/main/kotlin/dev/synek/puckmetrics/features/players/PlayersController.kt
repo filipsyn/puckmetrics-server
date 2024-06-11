@@ -5,6 +5,7 @@ import dev.synek.puckmetrics.contracts.PlayerDetailsResponse
 import dev.synek.puckmetrics.contracts.PlayerInfoResponse
 import dev.synek.puckmetrics.shared.ControllerConstants.APPLICATION_JSON
 import jakarta.validation.Valid
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -14,8 +15,10 @@ class PlayersController(
     private val playersService: PlayersService
 ) {
     @GetMapping(PlayersEndpointURLs.GET_ALL_PLAYERS, produces = [APPLICATION_JSON])
-    fun getAllPlayers(): ResponseEntity<List<PlayerInfoResponse>> {
-        val players = playersService.get()
+    fun getAllPlayers(
+        pageable: Pageable,
+    ): ResponseEntity<List<PlayerInfoResponse>> {
+        val players = playersService.get(pageable = pageable)
             .toList()
             .map(Player::toInfoResponse)
 

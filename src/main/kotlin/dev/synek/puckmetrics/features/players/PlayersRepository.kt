@@ -1,5 +1,5 @@
 package dev.synek.puckmetrics.features.players
 
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface PlayersRepository : CrudRepository<Player, Long>
+interface PlayersRepository : JpaRepository<Player, Long>
