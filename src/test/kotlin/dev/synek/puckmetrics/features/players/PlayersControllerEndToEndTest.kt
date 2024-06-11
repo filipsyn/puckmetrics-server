@@ -60,4 +60,38 @@ class PlayersControllerEndToEndTest(
             }
         }
     }
+
+    @Nested
+    inner class GetPlayerById {
+        @Test
+        fun `returns 404 when player with provided ID does not exist`() {
+            // Arrange
+            val invalidId = 999L
+
+            // Act
+            val response = mockMvc.get("$baseUrl/$invalidId")
+
+            // Assert
+            response.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        fun `gets a player`() {
+            // Arrange
+            val playerId = 100L
+
+            // Act
+            val response = mockMvc.get("$baseUrl/$playerId")
+
+            // Assert
+            response.andExpect {
+                status { isOk() }
+                content { contentType("application/json") }
+                jsonPath("$.firstName") { value("Jaromir") }
+                jsonPath("$.lastName") { value("Jagr") }
+            }
+        }
+    }
 }
