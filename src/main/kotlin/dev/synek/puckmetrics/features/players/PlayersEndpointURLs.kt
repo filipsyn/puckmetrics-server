@@ -6,4 +6,6 @@ object PlayersEndpointURLs {
     const val GET_ALL_PLAYERS = ""
 
     const val GET_PLAYER_BY_ID = "/{id}"
+
+    const val CREATE_PLAYER = ""
 }
