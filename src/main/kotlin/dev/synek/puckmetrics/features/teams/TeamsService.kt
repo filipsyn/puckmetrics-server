@@ -8,7 +8,8 @@ import kotlin.jvm.optionals.getOrNull
 class TeamsService(
     private val teamsRepository: TeamsRepository,
 ) {
-    fun get(pageable: Pageable): Iterable<Team> = teamsRepository.findAll(pageable)
+    fun get(pageable: Pageable): List<Team> =
+        teamsRepository.findAll(pageable).toList()
 
     fun get(id: Long): Team? = teamsRepository.findById(id).getOrNull()
 
