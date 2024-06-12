@@ -7,11 +7,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import java.util.*
 
 class PlayersServiceUnitTest {
     private val playersRepository: PlayersRepository = mockk<PlayersRepository>()
     private val playersService: PlayersService = PlayersService(playersRepository)
+    private val pageable = mockk<Pageable>()
 
     val players = listOf(
         Player(firstName = "Jaromir", lastName = "Jagr"),
@@ -27,10 +30,10 @@ class PlayersServiceUnitTest {
         @Test
         fun `returns empty list when no players are present`() {
             // Arrange
-            every { playersRepository.findAll() } returns emptyList()
+            every { playersRepository.findAll(pageable) } returns PageImpl(emptyList())
 
             // Act
-            val result = playersService.get()
+            val result = playersService.get(pageable)
 
             // Assert
             assertAll(
@@ -43,10 +46,10 @@ class PlayersServiceUnitTest {
         @Test
         fun `returns all players when present`() {
             // Arrange
-            every { playersRepository.findAll() } returns players
+            every { playersRepository.findAll(pageable) } returns PageImpl(players)
 
             // Act
-            val result = playersService.get()
+            val result = playersService.get(pageable)
 
             // Assert
             assertAll(
