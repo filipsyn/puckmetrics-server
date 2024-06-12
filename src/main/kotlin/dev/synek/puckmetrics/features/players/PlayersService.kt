@@ -1,5 +1,6 @@
 package dev.synek.puckmetrics.features.players
 
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -7,8 +8,8 @@ import kotlin.jvm.optionals.getOrNull
 class PlayersService(
     private val playersRepository: PlayersRepository
 ) {
-    fun get(): List<Player> =
-        playersRepository.findAll().toList()
+    fun get(pageable: Pageable): List<Player> =
+        playersRepository.findAll(pageable).toList()
 
     fun get(id: Long): Player? =
         playersRepository.findById(id).getOrNull()

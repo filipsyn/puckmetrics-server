@@ -1,5 +1,6 @@
 package dev.synek.puckmetrics.features.teams
 
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -7,7 +8,8 @@ import kotlin.jvm.optionals.getOrNull
 class TeamsService(
     private val teamsRepository: TeamsRepository,
 ) {
-    fun get(): Iterable<Team> = teamsRepository.findAll()
+    fun get(pageable: Pageable): List<Team> =
+        teamsRepository.findAll(pageable).toList()
 
     fun get(id: Long): Team? = teamsRepository.findById(id).getOrNull()
 

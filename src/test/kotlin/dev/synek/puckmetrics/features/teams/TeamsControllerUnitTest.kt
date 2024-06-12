@@ -7,11 +7,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 
 class TeamsControllerUnitTest {
     private val teamsService = mockk<TeamsService>()
     private val teamsController = TeamsController(teamsService)
+    private val pageable = mockk<Pageable>()
 
     private val teams = listOf(
         Team(location = "New York", name = "Rangers"),
@@ -25,7 +27,7 @@ class TeamsControllerUnitTest {
     @Nested
     inner class GetAllTeams {
         init {
-            every { teamsService.get() } returns teams
+            every { teamsService.get(pageable = any()) } returns teams
         }
 
         @Test
@@ -34,7 +36,7 @@ class TeamsControllerUnitTest {
             val expectedTeams = teams.map(Team::toResponse)
 
             // Act
-            val result = teamsController.getAllTeams()
+            val result = teamsController.getAllTeams(pageable)
 
             // Assert
             assertAll(

@@ -6,11 +6,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import java.util.*
 
 class TeamsServiceUnitTest {
     private val teamsRepository = mockk<TeamsRepository>()
     private val teamsService = TeamsService(teamsRepository)
+    private val pageable = mockk<Pageable>()
 
     private val teams = listOf(
         Team(location = "New York", name = "Rangers"),
@@ -27,10 +30,10 @@ class TeamsServiceUnitTest {
         @Test
         fun `lists all teams when present`() {
             // Arrange
-            every { teamsRepository.findAll() } returns teams
+            every { teamsRepository.findAll(pageable) } returns PageImpl(teams)
 
             // Act
-            val result = teamsService.get()
+            val result = teamsService.get(pageable)
 
             // Assert
             assertThat(result).isNotNull
@@ -41,10 +44,10 @@ class TeamsServiceUnitTest {
         @Test
         fun `returns empty list when no teams are present`() {
             // Arrange
-            every { teamsRepository.findAll() } returns emptyList()
+            every { teamsRepository.findAll(pageable) } returns PageImpl(emptyList())
 
             // Act
-            val result = teamsService.get()
+            val result = teamsService.get(pageable)
 
             // Assert
             assertThat(result).isNotNull

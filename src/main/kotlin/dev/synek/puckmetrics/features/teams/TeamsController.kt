@@ -4,6 +4,7 @@ import dev.synek.puckmetrics.contracts.CreateUpdateTeamRequest
 import dev.synek.puckmetrics.contracts.TeamInfoResponse
 import dev.synek.puckmetrics.shared.ControllerConstants.APPLICATION_JSON
 import jakarta.validation.Valid
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -14,8 +15,10 @@ class TeamsController(
     private val teamsService: TeamsService,
 ) {
     @GetMapping(TeamsEndpointURLs.GET_ALL_TEAMS, produces = [APPLICATION_JSON])
-    fun getAllTeams(): ResponseEntity<List<TeamInfoResponse>> {
-        val teams = teamsService.get()
+    fun getAllTeams(
+        pageable: Pageable
+    ): ResponseEntity<List<TeamInfoResponse>> {
+        val teams = teamsService.get(pageable)
             .toList()
             .map(Team::toResponse)
 

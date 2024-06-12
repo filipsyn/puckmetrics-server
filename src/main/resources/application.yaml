@@ -19,6 +19,9 @@ spring:
   sql:
     init:
       mode: always
+  data:
+    rest:
+      default-page-size: 20
 
 
 server:

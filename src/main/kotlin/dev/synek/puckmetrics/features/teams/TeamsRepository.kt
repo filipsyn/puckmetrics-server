@@ -1,5 +1,5 @@
 package dev.synek.puckmetrics.features.teams
 
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface TeamsRepository : CrudRepository<Team, Long>
+interface TeamsRepository : JpaRepository<Team, Long>
