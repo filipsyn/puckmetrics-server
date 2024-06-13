@@ -1,9 +1,7 @@
 package dev.synek.puckmetrics.features.teams
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import dev.synek.puckmetrics.features.games.Game
+import jakarta.persistence.*
 
 
 @Entity
@@ -12,11 +10,21 @@ data class Team(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
+    @Column(name = "franchise_id")
     val franchiseId: Long? = null,
 
+    @Column(name = "location")
     val location: String? = null,
 
+    @Column(name = "name")
     val name: String? = null,
 
+    @Column(name = "abbreviation")
     val abbreviation: String = "",
+
+    @OneToMany(mappedBy = "homeTeam")
+    val homeGames: Collection<Game> = emptyList(),
+
+    @OneToMany(mappedBy = "awayTeam")
+    val awayGames: Collection<Game> = emptyList(),
 )

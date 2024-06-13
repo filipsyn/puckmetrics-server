@@ -1,6 +1,8 @@
 package dev.synek.puckmetrics.features.games
 
+import dev.synek.puckmetrics.features.teams.Team
 import jakarta.persistence.*
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.PositiveOrZero
 import java.util.*
 
@@ -19,8 +21,18 @@ data class Game(
     @Column(name = "date_time_utc")
     val dateTimeUtc: Date? = null,
 
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "home_team_id", insertable = false, updatable = false)
+    val awayTeam: Team? = null,
+
     @Column(name = "away_team_id")
     val awayTeamId: Long? = null,
+
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "home_team_id", insertable = false, updatable = false)
+    val homeTeam: Team? = null,
 
     @Column(name = "home_team_id")
     val homeTeamId: Long? = null,
