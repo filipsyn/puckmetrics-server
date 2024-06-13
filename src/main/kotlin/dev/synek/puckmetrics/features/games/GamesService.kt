@@ -16,4 +16,12 @@ class GamesService(
 
     fun create(game: Game): Game =
         gamesRepository.save(game)
+
+    fun delete(id: Long): Boolean {
+        val game = gamesRepository.findById(id).getOrNull()
+            ?: return false
+
+        gamesRepository.delete(game)
+        return true
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.transaction.annotation.Transactional
@@ -449,6 +450,38 @@ class GamesControllerEndToEndTest(
                 jsonPath("$.dateTimeUtc") { value("2020-10-20T00:00:00.000+00:00") }
                 jsonPath("$.outcome") { value("home win REG") }
                 jsonPath("$.venueName") { value("United Center") }
+            }
+        }
+    }
+
+    @Nested
+    inner class Delete {
+        @Test
+        fun `returns 400 when game is not found`() {
+            // Arrange
+            val invalidGameId = 999L
+
+            // Act
+            val result = mockMvc.delete("/games/$invalidGameId")
+
+            // Assert
+            result.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        @Rollback
+        fun `deletes game`() {
+            // Arrange
+            val gameId = 1001L
+
+            // Act
+            val result = mockMvc.delete("/games/$gameId")
+
+            // Assert
+            result.andExpect {
+                status { isNoContent() }
             }
         }
     }

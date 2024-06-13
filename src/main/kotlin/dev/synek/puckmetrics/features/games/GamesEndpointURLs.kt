@@ -8,4 +8,6 @@ object GamesEndpointURLs {
     const val GET_GAME_BY_ID = "/{id}"
 
     const val CREATE_GAME = ""
+
+    const val DELETE_GAME = "/{id}"
 }

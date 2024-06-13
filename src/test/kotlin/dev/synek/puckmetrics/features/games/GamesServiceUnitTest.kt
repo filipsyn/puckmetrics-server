@@ -109,4 +109,35 @@ class GamesServiceUnitTest {
             )
         }
     }
+
+    @Nested
+    inner class Delete {
+        @Test
+        fun `returns false when game not found`() {
+            // Arrange
+            val invalidGameId = 999L
+            every { gamesRepository.findById(invalidGameId) } returns Optional.empty()
+
+            // Act
+            val result = gamesService.delete(invalidGameId)
+
+            // Assert
+            assertThat(result).isFalse()
+        }
+
+        @Test
+        fun `deletes game`() {
+            // Arrange
+            val gameId = 1L
+            val game = Game(id = gameId, homeTeamId = 1, awayTeamId = 2, homeGoals = 3, awayGoals = 2)
+            every { gamesRepository.findById(gameId) } returns Optional.of(game)
+            every { gamesRepository.delete(game) } returns Unit
+
+            // Act
+            val result = gamesService.delete(gameId)
+
+            // Assert
+            assertThat(result).isTrue()
+        }
+    }
 }

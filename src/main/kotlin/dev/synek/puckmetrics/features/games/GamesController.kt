@@ -52,4 +52,17 @@ class GamesController(
             .created(URI.create("/games/${game.id}"))
             .body(game.toDetailsResponse())
     }
+
+    @DeleteMapping(GamesEndpointURLs.DELETE_GAME)
+    fun deleteGame(
+        @PathVariable id: Long
+    ): ResponseEntity<Unit> {
+        val isDeleted = gamesService.delete(id)
+
+        if (!isDeleted) {
+            return ResponseEntity.notFound().build()
+        }
+
+        return ResponseEntity.noContent().build()
+    }
 }
