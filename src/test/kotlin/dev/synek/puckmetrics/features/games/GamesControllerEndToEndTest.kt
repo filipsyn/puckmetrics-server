@@ -115,7 +115,7 @@ class GamesControllerEndToEndTest(
                 jsonPath("$.awayGoals") { value(2) }
                 jsonPath("$.season") { value("20202021") }
                 jsonPath("$.type") { value("R") }
-                jsonPath("$.dateTimeUtc") { value("2020-10-20 00:00:00") }
+                jsonPath("$.dateTimeUtc") { value("2020-10-20T00:00:00.000+00:00") }
                 jsonPath("$.outcome") { value("home win REG") }
                 jsonPath("$.venueName") { value("United Center") }
             }
