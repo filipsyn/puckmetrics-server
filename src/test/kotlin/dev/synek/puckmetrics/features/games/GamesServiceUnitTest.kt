@@ -1,18 +1,20 @@
 package dev.synek.puckmetrics.features.games
 
+import dev.synek.puckmetrics.features.teams.Team
+import dev.synek.puckmetrics.features.teams.TeamsRepository
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertAll
+import org.junit.jupiter.api.*
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import java.util.*
 
 class GamesServiceUnitTest {
     private val gamesRepository = mockk<GamesRepository>()
-    private val gamesService = GamesService(gamesRepository)
+    private val teamsRepository = mockk<TeamsRepository>()
+    private val gamesService = GamesService(gamesRepository, teamsRepository)
     private val pageable = mockk<Pageable>()
 
     val games = listOf(
@@ -92,11 +94,73 @@ class GamesServiceUnitTest {
     }
 
     @Nested
+    @TestInstance(PER_CLASS)
     inner class Create {
+        private val teamId1 = 1L
+        private val team1 = Team(
+            id = teamId1,
+            name = "Rangers",
+            location = "New York"
+        )
+
+        private val teamId2 = 2L
+        private val team2 = Team(
+            id = teamId2,
+            name = "Canadiens",
+            location = "Montreal"
+        )
+
+        private val invalidTeamId = 999L
+
+        @BeforeAll
+        fun beforeAll() {
+            every { teamsRepository.findById(teamId1) } returns Optional.of(team1)
+            every { teamsRepository.findById(teamId2) } returns Optional.of(team2)
+            every { teamsRepository.findById(invalidTeamId) } returns Optional.empty()
+        }
+
+        @Test
+        fun `invalid home team id throws exception`() {
+            // Arrange
+            val game = Game(
+                id = 6L,
+                homeTeamId = invalidTeamId,
+                awayTeamId = teamId2,
+                homeGoals = 3,
+                awayGoals = 2
+            )
+
+            // Act & Assert
+            assertThrows<IllegalArgumentException> { gamesService.create(game) }
+        }
+
+        @Test
+        fun `invalid away team id throws exception`() {
+            // Arrange
+            val game = Game(
+                id = 6L,
+                homeTeamId = teamId1,
+                awayTeamId = invalidTeamId,
+                homeGoals = 3,
+                awayGoals = 2
+            )
+
+            // Act & Assert
+            assertThrows<IllegalArgumentException> { gamesService.create(game) }
+        }
+
         @Test
         fun `creates game`() {
             // Arrange
-            val game = Game(id = 6L, homeTeamId = 1, awayTeamId = 2, homeGoals = 3, awayGoals = 2)
+            val game = Game(
+                id = 6L,
+                homeTeamId = teamId1,
+                awayTeamId = teamId2,
+                homeGoals = 3,
+                awayGoals = 2,
+                homeTeam = team1,
+                awayTeam = team2
+            )
             every { gamesRepository.save(game) } returns game
 
             // Act

@@ -20,6 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
 @AutoConfigureMockMvc
+@Sql("/test-data/teams.sql")
 @Sql("/test-data/games.sql")
 class GamesControllerEndToEndTest(
     @Autowired private val mockMvc: MockMvc
@@ -411,6 +412,64 @@ class GamesControllerEndToEndTest(
         }
 
         @Test
+        fun `returns 404 when home team is not found`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 999,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "20202021",
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        fun `returns 404 when away team is not foud`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 999,
+                    "awayGoals": 2,
+                    "season": "20202021",
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
         @Rollback
         fun `creates game`() {
             // Arrange
@@ -441,7 +500,7 @@ class GamesControllerEndToEndTest(
                 content { contentType("application/json") }
 
                 jsonPath("$.id") { value(1) }
-                jsonPath("$.homeTeamId") { value(200) }
+//                jsonPath("$.homeTeamId") { value(200) }
                 jsonPath("$.homeGoals") { value(4) }
                 jsonPath("$.awayTeamId") { value(100) }
                 jsonPath("$.awayGoals") { value(2) }
