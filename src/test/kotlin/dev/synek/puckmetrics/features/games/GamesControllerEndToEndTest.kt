@@ -111,9 +111,13 @@ class GamesControllerEndToEndTest(
                 status { isOk() }
 
                 jsonPath("$.id") { value(1001) }
-                jsonPath("$.homeTeamId") { value(200) }
+                jsonPath("$.homeTeam.id") { value(200) }
+                jsonPath("$.homeTeam.location") { value("Chicago") }
+                jsonPath("$.homeTeam.name") { value("Blackhawks") }
                 jsonPath("$.homeGoals") { value(4) }
-                jsonPath("$.awayTeamId") { value(100) }
+                jsonPath("$.awayTeam.id") { value(100) }
+                jsonPath("$.awayTeam.location") { value("Boston") }
+                jsonPath("$.awayTeam.name") { value("Bruins") }
                 jsonPath("$.awayGoals") { value(2) }
                 jsonPath("$.season") { value("20202021") }
                 jsonPath("$.type") { value("R") }
@@ -500,9 +504,13 @@ class GamesControllerEndToEndTest(
                 content { contentType("application/json") }
 
                 jsonPath("$.id") { value(1) }
-//                jsonPath("$.homeTeamId") { value(200) }
+                jsonPath("$.homeTeam.id") { value(200) }
+                jsonPath("$.homeTeam.location") { value("Chicago") }
+                jsonPath("$.homeTeam.name") { value("Blackhawks") }
                 jsonPath("$.homeGoals") { value(4) }
-                jsonPath("$.awayTeamId") { value(100) }
+                jsonPath("$.awayTeam.id") { value(100) }
+                jsonPath("$.awayTeam.location") { value("Boston") }
+                jsonPath("$.awayTeam.name") { value("Bruins") }
                 jsonPath("$.awayGoals") { value(2) }
                 jsonPath("$.season") { value("20202021") }
                 jsonPath("$.type") { value("R") }
