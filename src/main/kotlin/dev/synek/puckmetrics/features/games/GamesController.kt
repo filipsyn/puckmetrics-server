@@ -46,7 +46,11 @@ class GamesController(
     fun createGame(
         @Valid @RequestBody request: CreateGameRequest
     ): ResponseEntity<GameDetailsResponse> {
-        val game = gamesService.create(request.toEntity())
+        val game = try {
+            gamesService.create(request.toEntity())
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.notFound().build()
+        }
 
         return ResponseEntity
             .created(URI.create("/games/${game.id}"))
