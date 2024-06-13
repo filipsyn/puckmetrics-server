@@ -23,7 +23,7 @@ data class Game(
 
     @ManyToOne
     @NotNull
-    @JoinColumn(name = "home_team_id", insertable = false, updatable = false)
+    @JoinColumn(name = "away_team_id", insertable = false, updatable = false)
     val awayTeam: Team? = null,
 
     @Column(name = "away_team_id")
