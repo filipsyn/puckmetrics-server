@@ -2,6 +2,7 @@ package dev.synek.puckmetrics.features.games
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.PositiveOrZero
+import java.util.*
 
 @Entity
 data class Game(
@@ -16,7 +17,7 @@ data class Game(
     val type: String? = null,
 
     @Column(name = "date_time_utc")
-    val dateTimeUtc: String? = null,
+    val dateTimeUtc: Date? = null,
 
     @Column(name = "away_team_id")
     val awayTeamId: Long? = null,

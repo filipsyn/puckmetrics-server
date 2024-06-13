@@ -1,5 +1,7 @@
 package dev.synek.puckmetrics.contracts
 
+import java.util.*
+
 data class GameDetailsResponse(
     val id: Long? = null,
 
@@ -7,7 +9,7 @@ data class GameDetailsResponse(
 
     val type: String? = null,
 
-    val dateTimeUtc: String? = null,
+    val dateTimeUtc: Date? = null,
 
     val awayTeamId: Long? = null,
 
