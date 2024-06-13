@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 class GamesServiceUnitTest {
     private val gamesRepository = mockk<GamesRepository>()
@@ -56,4 +57,38 @@ class GamesServiceUnitTest {
             )
         }
     }
+
+    @Nested
+    inner class GetById {
+        @Test
+        fun `returns null when game not found`() {
+            // Arrange
+            val invalidGameId = 999L
+            every { gamesRepository.findById(invalidGameId) } returns Optional.empty()
+
+            // Act
+            val result = gamesService.get(invalidGameId)
+
+            // Assert
+            assertThat(result).isNull()
+        }
+
+        @Test
+        fun `returns game by id`() {
+            // Arrange
+            val gameId = 1L
+            val game = Game(id = gameId, homeTeamId = 1, awayTeamId = 2, homeGoals = 3, awayGoals = 2)
+            every { gamesRepository.findById(gameId) } returns Optional.of(game)
+
+            // Act
+            val result = gamesService.get(gameId)
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result).isEqualTo(game) },
+            )
+        }
+    }
+
 }

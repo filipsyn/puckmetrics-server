@@ -76,5 +76,46 @@ class GamesControllerEndToEndTest(
             }
         }
     }
-}
 
+    @Nested
+    inner class GetGameById {
+        @Test
+        fun `returns 404 when game is not found`() {
+            // Arrange
+            val invalidGameId = 999L
+
+            // Act
+            val result = mockMvc.get("/games/$invalidGameId")
+
+            // Assert
+            result.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        fun `returns game by id`() {
+            // Arrange
+            val gameId = 1001L
+
+            // Act
+            val result = mockMvc.get("/games/$gameId")
+
+            // Assert
+            result.andExpect {
+                status { isOk() }
+
+                jsonPath("$.id") { value(1001) }
+                jsonPath("$.homeTeamId") { value(200) }
+                jsonPath("$.homeGoals") { value(4) }
+                jsonPath("$.awayTeamId") { value(100) }
+                jsonPath("$.awayGoals") { value(2) }
+                jsonPath("$.season") { value("20202021") }
+                jsonPath("$.type") { value("R") }
+                jsonPath("$.dateTimeUtc") { value("2020-10-20 00:00:00") }
+                jsonPath("$.outcome") { value("home win REG") }
+                jsonPath("$.venueName") { value("United Center") }
+            }
+        }
+    }
+}
