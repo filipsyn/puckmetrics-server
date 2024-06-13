@@ -6,9 +6,12 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.http.MediaType
+import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.junit.jupiter.Testcontainers
 
@@ -113,6 +116,337 @@ class GamesControllerEndToEndTest(
                 jsonPath("$.season") { value("20202021") }
                 jsonPath("$.type") { value("R") }
                 jsonPath("$.dateTimeUtc") { value("2020-10-20 00:00:00") }
+                jsonPath("$.outcome") { value("home win REG") }
+                jsonPath("$.venueName") { value("United Center") }
+            }
+        }
+    }
+
+    @Nested
+    inner class Create {
+        @Test
+        fun `returns 400 when season is missing`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `returns 400 when season is too short`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "2021",
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `returns 400 when season is too long`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "202120212",
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `returns 400 when type is missing`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "20202021",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `returns 400 when type is too long`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "20202021",
+                    "type": "Regular",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `returns 400 when dateTimeUtc is missing`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "20202021",
+                    "type": "R",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `returns 400 when awayGoals is negative number`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": -2,
+                    "season": "20202021",
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `returns 400 when homeGoals is negative number`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": -4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "20202021",
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `returns 400 when outcome is missing`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "20202021",
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        fun `returns 400 when venue name is missing`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "20202021",
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        @Rollback
+        fun `creates game`() {
+            // Arrange
+            val game = """
+                {
+                    "homeTeamId": 200,
+                    "homeGoals": 4,
+                    "awayTeamId": 100,
+                    "awayGoals": 2,
+                    "season": "20202021",
+                    "type": "R",
+                    "dateTimeUtc": "2020-10-20T00:00:00.000+00:00",
+                    "outcome": "home win REG",
+                    "venueName": "United Center"
+                }
+            """.trimIndent()
+
+            // Act
+            val result = mockMvc.post("/games") {
+                contentType = MediaType.APPLICATION_JSON
+                content = game
+            }
+
+            // Assert
+            result.andExpect {
+                status { isCreated() }
+                header { exists("Location") }
+                content { contentType("application/json") }
+
+                jsonPath("$.id") { value(1) }
+                jsonPath("$.homeTeamId") { value(200) }
+                jsonPath("$.homeGoals") { value(4) }
+                jsonPath("$.awayTeamId") { value(100) }
+                jsonPath("$.awayGoals") { value(2) }
+                jsonPath("$.season") { value("20202021") }
+                jsonPath("$.type") { value("R") }
+                jsonPath("$.dateTimeUtc") { value("2020-10-20T00:00:00.000+00:00") }
                 jsonPath("$.outcome") { value("home win REG") }
                 jsonPath("$.venueName") { value("United Center") }
             }

@@ -6,4 +6,6 @@ object GamesEndpointURLs {
     const val GET_ALL_GAMES = ""
 
     const val GET_GAME_BY_ID = "/{id}"
+
+    const val CREATE_GAME = ""
 }

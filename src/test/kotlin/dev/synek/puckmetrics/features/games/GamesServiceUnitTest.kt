@@ -91,4 +91,22 @@ class GamesServiceUnitTest {
         }
     }
 
+    @Nested
+    inner class Create {
+        @Test
+        fun `creates game`() {
+            // Arrange
+            val game = Game(id = 6L, homeTeamId = 1, awayTeamId = 2, homeGoals = 3, awayGoals = 2)
+            every { gamesRepository.save(game) } returns game
+
+            // Act
+            val result = gamesService.create(game)
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result).isEqualTo(game) },
+            )
+        }
+    }
 }

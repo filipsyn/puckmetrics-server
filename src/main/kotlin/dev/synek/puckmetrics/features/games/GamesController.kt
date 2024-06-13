@@ -1,14 +1,15 @@
 package dev.synek.puckmetrics.features.games
 
+import dev.synek.puckmetrics.contracts.CreateGameRequest
 import dev.synek.puckmetrics.contracts.GameDetailsResponse
 import dev.synek.puckmetrics.contracts.GameInfoResponse
+import dev.synek.puckmetrics.shared.ControllerConstants.APPLICATION_JSON
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.net.URI
 
 @RestController
 @RequestMapping(GamesEndpointURLs.CONTROLLER_ROOT)
@@ -34,5 +35,21 @@ class GamesController(
             ?: return ResponseEntity.notFound().build()
 
         return ResponseEntity.ok(game.toDetailsResponse())
+    }
+
+    @PostMapping(
+        GamesEndpointURLs.CREATE_GAME,
+        consumes = [APPLICATION_JSON],
+        produces = [APPLICATION_JSON]
+    )
+    @Valid
+    fun createGame(
+        @Valid @RequestBody request: CreateGameRequest
+    ): ResponseEntity<GameDetailsResponse> {
+        val game = gamesService.create(request.toEntity())
+
+        return ResponseEntity
+            .created(URI.create("/games/${game.id}"))
+            .body(game.toDetailsResponse())
     }
 }

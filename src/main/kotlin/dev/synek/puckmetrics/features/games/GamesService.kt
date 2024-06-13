@@ -13,4 +13,7 @@ class GamesService(
         gamesRepository.findAll(pageable).toList()
 
     fun get(id: Long): Game? = gamesRepository.findById(id).getOrNull()
+
+    fun create(game: Game): Game =
+        gamesRepository.save(game)
 }
