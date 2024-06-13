@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="1" author="Filip Synek">
+        <createTable tableName="game">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="season" type="varchar(8)"/>
+            <column name="type" type="varchar(1)"/>
+            <column name="date_time_utc" type="timestamp"/>
+            <column name="home_team_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="away_team_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="home_goals" type="int"/>
+            <column name="away_goals" type="int"/>
+            <column name="outcome" type="varchar(64)"/>
+            <column name="venue" type="varchar(64)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
