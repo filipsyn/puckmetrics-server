@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="1" author="Filip Synek">
+        <createTable tableName="game_team_stats">
+            <column name="game_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="team_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="home_or_away" type="varchar(16)"/>
+            <column name="won" type="boolean"/>
+            <column name="settled_in" type="varchar(16)"/>
+            <column name="head_coach" type="varchar(128)"/>
+            <column name="goals" type="int"/>
+            <column name="shots" type="int"/>
+            <column name="hits" type="int"/>
+            <column name="penalty_minutes" type="int"/>
+            <column name="power_play_opportunities" type="int"/>
+            <column name="power_play_goals" type="int"/>
+            <column name="face_off_win_percentage" type="decimal(5, 2)"/>
+            <column name="giveaways" type="int"/>
+            <column name="takeaways" type="int"/>
+            <column name="blocked" type="int"/>
+            <column name="start_rink_side" type="varchar(16)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
