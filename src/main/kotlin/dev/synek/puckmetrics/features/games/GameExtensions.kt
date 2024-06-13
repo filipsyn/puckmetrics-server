@@ -3,6 +3,7 @@ package dev.synek.puckmetrics.features.games
 import dev.synek.puckmetrics.contracts.CreateGameRequest
 import dev.synek.puckmetrics.contracts.GameDetailsResponse
 import dev.synek.puckmetrics.contracts.GameInfoResponse
+import dev.synek.puckmetrics.features.teams.toResponse
 
 fun Game.toInfoResponse() = GameInfoResponse(
     id = id,
@@ -17,10 +18,10 @@ fun Game.toDetailsResponse() = GameDetailsResponse(
     season = season,
     type = type,
     dateTimeUtc = dateTimeUtc,
-    awayTeamId = awayTeam?.id,
-    homeTeamId = homeTeam?.id,
-    awayGoals = awayGoals,
+    homeTeam = homeTeam?.toResponse(),
     homeGoals = homeGoals,
+    awayTeam = awayTeam?.toResponse(),
+    awayGoals = awayGoals,
     outcome = outcome,
     venueName = venueName,
 )

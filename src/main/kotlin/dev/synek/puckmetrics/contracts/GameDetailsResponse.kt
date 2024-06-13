@@ -11,13 +11,13 @@ data class GameDetailsResponse(
 
     val dateTimeUtc: Date? = null,
 
-    val awayTeamId: Long? = null,
-
-    val homeTeamId: Long? = null,
-
-    val awayGoals: Int = 0,
+    val homeTeam: TeamInfoResponse? = null,
 
     val homeGoals: Int = 0,
+
+    val awayTeam: TeamInfoResponse? = null,
+
+    val awayGoals: Int = 0,
 
     val outcome: String? = null,
 
