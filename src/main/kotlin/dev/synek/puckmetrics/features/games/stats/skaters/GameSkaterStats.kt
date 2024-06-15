@@ -38,52 +38,52 @@ data class GameSkaterStats(
     val team: Team? = null,
 
     @Column(name = "time_on_ice")
-    val timeOnIce: Int = 0,
+    val timeOnIce: Int? = 0,
 
     @Column(name = "assists")
-    val assists: Int = 0,
+    val assists: Int? = 0,
 
     @Column(name = "goals")
-    val goals: Int = 0,
+    val goals: Int? = 0,
 
     @Column(name = "shots")
-    val shots: Int = 0,
+    val shots: Int? = 0,
 
     @Column(name = "hits")
-    val hits: Int = 0,
+    val hits: Int? = null,
 
     @Column(name = "power_play_goals")
-    val powerPlayGoals: Int = 0,
+    val powerPlayGoals: Int? = 0,
 
     @Column(name = "power_play_assists")
-    val powerPlayAssists: Int = 0,
+    val powerPlayAssists: Int? = 0,
 
     @Column(name = "penalty_minutes")
-    val penaltyMinutes: Int = 0,
+    val penaltyMinutes: Int? = 0,
 
     @Column(name = "face_off_wins")
-    val faceOffWins: Int = 0,
+    val faceOffWins: Int? = 0,
 
     @Column(name = "face_offs_taken")
-    val faceOffsTaken: Int = 0,
+    val faceOffsTaken: Int? = 0,
 
     @Column(name = "takeaways")
-    val takeaways: Int = 0,
+    val takeaways: Int? = 0,
 
     @Column(name = "giveaways")
-    val giveaways: Int = 0,
+    val giveaways: Int? = 0,
 
     @Column(name = "short_handed_goals")
-    val shortHandedGoals: Int = 0,
+    val shortHandedGoals: Int? = 0,
 
     @Column(name = "short_handed_assists")
-    val shortHandedAssists: Int = 0,
+    val shortHandedAssists: Int? = 0,
 
     @Column(name = "blocked")
-    val blocked: Int = 0,
+    val blocked: Int? = 0,
 
     @Column(name = "plus_minus")
-    val plusMinus: Int = 0,
+    val plusMinus: Int? = 0,
 
     @Column(name = "even_time_on_ice")
     val evenTimeOnIce: Int = 0,
@@ -96,12 +96,9 @@ data class GameSkaterStats(
 )
 
 data class GameSkaterStatsId(
-    @Column(name = "game_id")
-    val gameId: Long,
+    val gameId: Long? = null,
 
-    @Column(name = "player_id")
-    val playerId: Long,
+    val playerId: Long? = null,
 
-    @Column(name = "team_id")
-    val teamId: Long,
+    val teamId: Long? = null
 ) : Serializable

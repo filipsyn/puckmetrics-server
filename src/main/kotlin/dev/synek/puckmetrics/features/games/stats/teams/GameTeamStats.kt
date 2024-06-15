@@ -28,7 +28,7 @@ data class GameTeamStats(
     val homeOrAway: String? = null,
 
     @Column(name = "won")
-    val won: Boolean = false,
+    val won: Boolean? = false,
 
     @Column(name = "settled_in")
     val settledIn: String? = null,
@@ -37,45 +37,43 @@ data class GameTeamStats(
     val headCoach: String? = null,
 
     @Column(name = "goals")
-    val goals: Int = 0,
+    val goals: Int? = 0,
 
     @Column(name = "shots")
-    val shots: Int = 0,
+    val shots: Int? = 0,
 
     @Column(name = "hits")
-    val hits: Int = 0,
+    val hits: Int? = 0,
 
     @Column(name = "penalty_minutes")
-    val penaltyMinutes: Int = 0,
+    val penaltyMinutes: Int? = 0,
 
     @Column(name = "power_play_opportunities")
-    val powerPlayOpportunities: Int = 0,
+    val powerPlayOpportunities: Int? = 0,
 
     @Column(name = "power_play_goals")
-    val powerPlayGoals: Int = 0,
+    val powerPlayGoals: Int? = 0,
 
     @Column(name = "face_off_win_percentage")
-    val faceOffWinPercentage: Double = 0.0,
+    val faceOffWinPercentage: Double? = 0.0,
 
     @Column(name = "giveaways")
-    val giveaways: Int = 0,
+    val giveaways: Int? = 0,
 
     @Column(name = "takeaways")
-    val takeaways: Int = 0,
+    val takeaways: Int? = 0,
 
     @Column(name = "blocked")
-    val blocked: Int = 0,
+    val blocked: Int? = 0,
 
     @Column(name = "start_rink_side")
     val startRingSide: String? = null,
 )
 
 data class GameTeamStatsId(
-    @Column(name = "game_id")
-    val gameId: Long,
+    val gameId: Long? = null,
 
-    @Column(name = "team_id")
-    val teamId: Long,
+    val teamId: Long? = null,
 ) : Serializable
 
 
