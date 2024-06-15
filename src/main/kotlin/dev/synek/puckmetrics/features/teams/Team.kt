@@ -3,6 +3,7 @@ package dev.synek.puckmetrics.features.teams
 import dev.synek.puckmetrics.features.games.Game
 import dev.synek.puckmetrics.features.games.stats.goalies.GameGoalieStats
 import dev.synek.puckmetrics.features.games.stats.skaters.GameSkaterStats
+import dev.synek.puckmetrics.features.games.stats.teams.GameTeamStats
 import jakarta.persistence.*
 
 
@@ -29,6 +30,9 @@ data class Team(
 
     @OneToMany(mappedBy = "awayTeam")
     val awayGames: Collection<Game> = emptyList(),
+
+    @OneToMany(mappedBy = "team")
+    val gameTeamStats: Collection<GameTeamStats> = emptyList(),
 
     @OneToMany(mappedBy = "team")
     val gameSkaterStats: Collection<GameSkaterStats> = emptyList(),
