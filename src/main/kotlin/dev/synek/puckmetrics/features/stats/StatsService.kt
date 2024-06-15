@@ -16,6 +16,7 @@ class StatsService(
             season.value.mapValues { coachGame -> coachGame.value.count { it.won == true } }
         }
         .mapValues { season -> season.value.maxByOrNull { gamesWonByCoach -> gamesWonByCoach.value } }
+        .toSortedMap(compareBy { it })
         .map { season ->
             BestCoachInSeasonResponse(
                 season = season.key ?: "Unknown",
