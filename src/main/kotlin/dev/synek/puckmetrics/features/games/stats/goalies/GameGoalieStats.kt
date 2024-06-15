@@ -1,9 +1,9 @@
 package dev.synek.puckmetrics.features.games.stats.goalies
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.IdClass
+import dev.synek.puckmetrics.features.games.Game
+import dev.synek.puckmetrics.features.players.Player
+import dev.synek.puckmetrics.features.teams.Team
+import jakarta.persistence.*
 import java.io.Serializable
 
 @Entity
@@ -13,13 +13,25 @@ data class GameGoalieStats(
     @Column(name = "game_id")
     val gameId: Long? = null,
 
+    @ManyToOne
+    @JoinColumn(name = "game_id", insertable = false, updatable = false)
+    val game: Game? = null,
+
     @Id
     @Column(name = "player_id")
     val playerId: Long? = null,
 
+    @ManyToOne
+    @JoinColumn(name = "player_id", insertable = false, updatable = false)
+    val player: Player? = null,
+
     @Id
     @Column(name = "team_id")
     val teamId: Long? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "team_id", insertable = false, updatable = false)
+    val team: Team? = null,
 
     @Column(name = "time_on_ice")
     val timeOnIce: Int = 0,

@@ -34,4 +34,27 @@
             <column name="even_strength_save_percentage" type="decimal(5,3)"/>
         </createTable>
     </changeSet>
+    <changeSet id="2" author="Filip Synek">
+        <addForeignKeyConstraint
+                constraintName="game_goalie_stats_game_id_fk"
+                baseTableName="game_goalie_stats"
+                baseColumnNames="game_id"
+                referencedTableName="game"
+                referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                constraintName="game_goalie_stats_player_id_fk"
+                baseTableName="game_goalie_stats"
+                baseColumnNames="player_id"
+                referencedTableName="player"
+                referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                constraintName="game_goalie_stats_team_id_fk"
+                baseTableName="game_goalie_stats"
+                baseColumnNames="team_id"
+                referencedTableName="team"
+                referencedColumnNames="id"
+        />
+    </changeSet>
 </databaseChangeLog>
