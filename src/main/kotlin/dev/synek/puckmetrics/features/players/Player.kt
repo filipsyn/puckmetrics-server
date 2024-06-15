@@ -1,5 +1,7 @@
 package dev.synek.puckmetrics.features.players
 
+import dev.synek.puckmetrics.features.games.stats.goalies.GameGoalieStats
+import dev.synek.puckmetrics.features.games.stats.skaters.GameSkaterStats
 import jakarta.persistence.*
 import java.util.*
 
@@ -35,4 +37,10 @@ data class Player(
 
     @Column(name = "shoots")
     val shoots: String? = null,
+
+    @OneToMany(mappedBy = "player")
+    val gameStats: Collection<GameSkaterStats> = emptyList(),
+
+    @OneToMany(mappedBy = "player")
+    val gameGoalieStats: Collection<GameGoalieStats> = emptyList(),
 )

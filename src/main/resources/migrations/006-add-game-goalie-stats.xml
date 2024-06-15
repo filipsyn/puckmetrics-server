@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="1" author="Filip Synek">
+        <createTable tableName="game_goalie_stats">
+            <column name="game_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="player_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="team_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="time_on_ice" type="int"/>
+            <column name="assists" type="int"/>
+            <column name="goals" type="int"/>
+            <column name="penalty_minutes" type="int"/>
+            <column name="shots" type="int"/>
+            <column name="saves" type="int"/>
+            <column name="power_play_saves" type="int"/>
+            <column name="short_handed_saves" type="int"/>
+            <column name="even_saves" type="int"/>
+            <column name="short_handed_shots_against" type="int"/>
+            <column name="even_shots_against" type="int"/>
+            <column name="power_play_shots_against" type="int"/>
+            <column name="decision" type="varchar(1)"/>
+            <column name="save_percentage" type="decimal(5,3)"/>
+            <column name="power_play_save_percentage" type="decimal(5,3)"/>
+            <column name="short_handed_save_percentage" type="decimal(5,3)"/>
+            <column name="even_strength_save_percentage" type="decimal(5,3)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="Filip Synek">
+        <addForeignKeyConstraint
+                constraintName="game_goalie_stats_game_id_fk"
+                baseTableName="game_goalie_stats"
+                baseColumnNames="game_id"
+                referencedTableName="game"
+                referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                constraintName="game_goalie_stats_player_id_fk"
+                baseTableName="game_goalie_stats"
+                baseColumnNames="player_id"
+                referencedTableName="player"
+                referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                constraintName="game_goalie_stats_team_id_fk"
+                baseTableName="game_goalie_stats"
+                baseColumnNames="team_id"
+                referencedTableName="team"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+</databaseChangeLog>
