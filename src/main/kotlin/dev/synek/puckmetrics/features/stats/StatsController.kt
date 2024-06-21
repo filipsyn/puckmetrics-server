@@ -1,6 +1,7 @@
 package dev.synek.puckmetrics.features.stats
 
 import dev.synek.puckmetrics.contracts.BestCoachInSeasonResponse
+import dev.synek.puckmetrics.contracts.PlayerSeasonGoalsResponse
 import dev.synek.puckmetrics.shared.ControllerConstants.APPLICATION_JSON
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,4 +20,11 @@ class StatsController(
     fun getBestCoaches(): List<BestCoachInSeasonResponse> =
         statsService.getBestCoaches()
 
+
+    @GetMapping(
+        StatsEndpointURLs.TOP_GOAL_SCORERS,
+        produces = [APPLICATION_JSON]
+    )
+    fun getTopGoalScorers(): List<PlayerSeasonGoalsResponse> =
+        statsService.getTopGoalScorers()
 }
