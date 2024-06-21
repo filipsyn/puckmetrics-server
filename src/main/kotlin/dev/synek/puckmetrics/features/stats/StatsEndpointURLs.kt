@@ -6,4 +6,6 @@ object StatsEndpointURLs {
     const val BEST_COACHES = "best-coaches"
 
     const val TOP_GOAL_SCORERS = "top-goal-scorers"
+
+    const val TOP_ASSISTERS = "top-assisters"
 }

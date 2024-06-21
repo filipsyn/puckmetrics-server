@@ -9,5 +9,6 @@ object Constants {
         const val MAXIMUM_WEIGHT = 650L
 
         const val DEFAULT_TOP_SCORERS_COUNT = 3
+        const val DEFAULT_TOP_ASSISTERS_COUNT = 3
     }
 }
