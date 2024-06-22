@@ -4,6 +4,6 @@ interface PlayerSeasonAssistsProjection {
     val playerId: Long
     val firstName: String
     val lastName: String
-    val season: Int
+    val season: String
     val totalAssists: Long
 }

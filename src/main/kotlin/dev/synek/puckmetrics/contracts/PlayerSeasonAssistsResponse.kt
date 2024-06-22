@@ -1,7 +1,7 @@
 package dev.synek.puckmetrics.contracts
 
 data class PlayerSeasonAssistsResponse(
-    val season: Int,
+    val season: String,
     val playerId: Long,
     val firstName: String,
     val lastName: String,
