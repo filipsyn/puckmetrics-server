@@ -3,6 +3,7 @@ package dev.synek.puckmetrics.features.stats
 import dev.synek.puckmetrics.contracts.BestCoachInSeasonResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonAssistsResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonGoalsResponse
+import dev.synek.puckmetrics.contracts.PlayerSeasonPointsResponse
 import dev.synek.puckmetrics.features.games.stats.teams.GameTeamStatsRepository
 import dev.synek.puckmetrics.shared.Constants.Player.DEFAULT_TOP_ASSISTERS_COUNT
 import dev.synek.puckmetrics.shared.Constants.Player.DEFAULT_TOP_SCORERS_COUNT
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service
 class StatsService(
     private val gameTeamStatsRepository: GameTeamStatsRepository
 ) {
+
     fun getBestCoaches(): List<BestCoachInSeasonResponse> = gameTeamStatsRepository.findAll()
         .groupBy { gameStat -> gameStat.game?.season }
         .filterKeys { season -> season != null }
@@ -30,7 +32,7 @@ class StatsService(
         }
 
     fun getTopGoalScorers(topPlayersPerSeason: Int = DEFAULT_TOP_SCORERS_COUNT): List<PlayerSeasonGoalsResponse> {
-        require(topPlayersPerSeason >= 1) { "Must select at least one player per season." }
+        require(topPlayersPerSeason >= 1) { INVALID_COUNT_ERROR }
 
         return gameTeamStatsRepository.getPlayersGoalsPerSeason()
             .groupBy { it.season }
@@ -44,7 +46,7 @@ class StatsService(
     }
 
     fun getTopAssisters(topPlayersPerSeason: Int = DEFAULT_TOP_ASSISTERS_COUNT): List<PlayerSeasonAssistsResponse> {
-        require(topPlayersPerSeason >= 1) { "Must select at least one player per season." }
+        require(topPlayersPerSeason >= 1) { INVALID_COUNT_ERROR }
 
         return gameTeamStatsRepository.getPlayersAssistsPerSeason()
             .groupBy { it.season }
@@ -55,6 +57,20 @@ class StatsService(
             .sortedWith(compareByDescending<PlayerSeasonAssistsProjection> { it.season }
                 .thenByDescending { it.totalAssists })
             .map(::toPlayerSeasonAssists)
+    }
+
+    fun getTopPointScorers(topPlayersPerSeason: Int = DEFAULT_TOP_SCORERS_COUNT): List<PlayerSeasonPointsResponse> {
+        require(topPlayersPerSeason >= 1) { INVALID_COUNT_ERROR }
+
+        return gameTeamStatsRepository.getPlayersPointsPerSeason()
+            .groupBy { it.season }
+            .flatMap { (_, players) ->
+                players.sortedByDescending { it.totalPoints }
+                    .take(topPlayersPerSeason)
+            }
+            .sortedWith(compareByDescending<PlayerSeasonPointsProjection> { it.season }
+                .thenByDescending { it.totalPoints })
+            .map(::toPlayerSeasonPoints)
     }
 
 
@@ -75,4 +91,17 @@ class StatsService(
             season = player.season,
             totalAssists = player.totalAssists,
         )
+
+    private fun toPlayerSeasonPoints(player: PlayerSeasonPointsProjection) =
+        PlayerSeasonPointsResponse(
+            playerId = player.playerId,
+            firstName = player.firstName,
+            lastName = player.lastName,
+            season = player.season,
+            totalPoints = player.totalPoints,
+        )
+
+    companion object {
+        private const val INVALID_COUNT_ERROR = "Must select at least one player per season."
+    }
 }

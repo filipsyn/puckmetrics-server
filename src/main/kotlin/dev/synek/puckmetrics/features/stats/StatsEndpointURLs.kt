@@ -8,4 +8,6 @@ object StatsEndpointURLs {
     const val TOP_GOAL_SCORERS = "top-goal-scorers"
 
     const val TOP_ASSISTERS = "top-assisters"
+
+    const val TOP_POINT_SCORERS = "top-point-scorers"
 }

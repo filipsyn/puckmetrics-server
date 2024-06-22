@@ -3,6 +3,7 @@ package dev.synek.puckmetrics.features.stats
 import dev.synek.puckmetrics.contracts.BestCoachInSeasonResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonAssistsResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonGoalsResponse
+import dev.synek.puckmetrics.contracts.PlayerSeasonPointsResponse
 import dev.synek.puckmetrics.shared.ControllerConstants.APPLICATION_JSON
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -36,4 +37,12 @@ class StatsController(
     )
     fun getTopAssisters(): List<PlayerSeasonAssistsResponse> =
         statsService.getTopAssisters()
+
+    @GetMapping(
+        StatsEndpointURLs.TOP_POINT_SCORERS,
+        produces = [APPLICATION_JSON]
+    )
+    fun getTopPoints(): List<PlayerSeasonPointsResponse> =
+        statsService.getTopPointScorers()
+
 }
