@@ -1,6 +1,7 @@
 package dev.synek.puckmetrics.features.games.stats.teams
 
 import dev.synek.puckmetrics.common.BaseIntegrationTest
+import dev.synek.puckmetrics.contracts.PlayerSeasonAssistsResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonGoalsResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
@@ -91,6 +92,85 @@ class GameTeamStatsRepositoryIntegrationTest(
                     firstName = it.firstName,
                     lastName = it.lastName,
                     totalGoals = it.totalGoals
+                )
+            }
+
+            // Assert
+            assertAll(
+                { assertThat(mappedResult.size).isEqualTo(expectedResult.count()) },
+                { assertThat(mappedResult).isEqualTo(expectedResult) },
+            )
+        }
+    }
+
+    @Nested
+    inner class GetPlayerAssistsPerSeason {
+        @Test
+        @Sql("/test-data/empty.sql")
+        fun `returns empty list when no player has recorded assist`() {
+            // Arrange
+            val expectedResult = emptyList<PlayerSeasonGoalsResponse>()
+
+            // Act
+            val result = gameTeamStatsRepository.getPlayersAssistsPerSeason()
+
+            // Assert
+            assertAll(
+                { assertThat(result.size).isEqualTo(expectedResult.count()) },
+                { assertThat(result).isEqualTo(expectedResult) },
+            )
+        }
+
+        @Test
+        fun `returns assists recorded by each player in each season`() {
+            // Arrange
+            val expectedResult = listOf(
+                PlayerSeasonAssistsResponse(
+                    playerId = 2001,
+                    season = "20112012",
+                    firstName = "Jaromir",
+                    lastName = "Jagr",
+                    totalAssists = 1,
+                ),
+                PlayerSeasonAssistsResponse(
+                    playerId = 2001,
+                    season = "19981999",
+                    firstName = "Jaromir",
+                    lastName = "Jagr",
+                    totalAssists = 6,
+                ),
+                PlayerSeasonAssistsResponse(
+                    playerId = 2002,
+                    season = "19981999",
+                    firstName = "Mario",
+                    lastName = "Lemieux",
+                    totalAssists = 3,
+                ),
+                PlayerSeasonAssistsResponse(
+                    playerId = 2004,
+                    season = "19981999",
+                    firstName = "Eric",
+                    lastName = "Lindros",
+                    totalAssists = 2,
+                ),
+                PlayerSeasonAssistsResponse(
+                    playerId = 2003,
+                    season = "19981999",
+                    firstName = "Wayne",
+                    lastName = "Gretzky",
+                    totalAssists = 1,
+                ),
+            )
+
+            // Act
+            val result = gameTeamStatsRepository.getPlayersAssistsPerSeason()
+            val mappedResult = result.map {
+                PlayerSeasonAssistsResponse(
+                    playerId = it.playerId,
+                    season = it.season,
+                    firstName = it.firstName,
+                    lastName = it.lastName,
+                    totalAssists = it.totalAssists,
                 )
             }
 
