@@ -94,4 +94,54 @@ class StatsControllerIntegrationTest(
             }
         }
     }
+
+    @Nested
+    inner class GetTopAssisters {
+        @Test
+        @Sql("/test-data/empty.sql")
+        fun `returns empty list when no players have assists`() {
+            // Act
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_ASSISTERS}")
+
+            // Assert
+            result.andExpect {
+                status { isOk() }
+                content { json("[]") }
+            }
+        }
+
+        @Test
+        fun `returns assists made by each player in each season`() {
+            // Act
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_ASSISTERS}")
+
+            // Assert
+            result.andExpect {
+                status { isOk() }
+                content { jsonPath("$[0].playerId") { value(2001) } }
+                content { jsonPath("$[0].season") { value("20112012") } }
+                content { jsonPath("$[0].firstName") { value("Jaromir") } }
+                content { jsonPath("$[0].lastName") { value("Jagr") } }
+                content { jsonPath("$[0].totalAssists") { value(1) } }
+
+                content { jsonPath("$[1].playerId") { value(2001) } }
+                content { jsonPath("$[1].season") { value("19981999") } }
+                content { jsonPath("$[1].firstName") { value("Jaromir") } }
+                content { jsonPath("$[1].lastName") { value("Jagr") } }
+                content { jsonPath("$[1].totalAssists") { value(6) } }
+
+                content { jsonPath("$[2].playerId") { value(2002) } }
+                content { jsonPath("$[2].season") { value("19981999") } }
+                content { jsonPath("$[2].firstName") { value("Mario") } }
+                content { jsonPath("$[2].lastName") { value("Lemieux") } }
+                content { jsonPath("$[2].totalAssists") { value(3) } }
+
+                content { jsonPath("$[3].playerId") { value(2004) } }
+                content { jsonPath("$[3].season") { value("19981999") } }
+                content { jsonPath("$[3].firstName") { value("Eric") } }
+                content { jsonPath("$[3].lastName") { value("Lindros") } }
+                content { jsonPath("$[3].totalAssists") { value(2) } }
+            }
+        }
+    }
 }
