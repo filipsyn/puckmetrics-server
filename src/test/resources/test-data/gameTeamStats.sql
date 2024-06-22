@@ -64,27 +64,27 @@ VALUES (1004, 3003, 'Peter Laviolette', false);
 
 
 -- Players statistics in games
-INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists)
-VALUES (1001, 3001, 2001, 4, 1);
+INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists, face_off_wins, face_offs_taken)
+VALUES (1001, 3001, 2001, 4, 1, 10, 15);
 
-INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists)
-VALUES (1001, 3001, 2002, 1, 3);
+INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists, face_off_wins, face_offs_taken)
+VALUES (1001, 3001, 2002, 1, 3, 5, 10);
 
-INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists)
-VALUES (1001, 3002, 2003, 2, 0);
+INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists, face_off_wins, face_offs_taken)
+VALUES (1001, 3002, 2003, 2, 0, 2, 3);
 
-INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists)
-VALUES (1002, 3001, 2001, 1, 5);
+INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists, face_off_wins, face_offs_taken)
+VALUES (1002, 3001, 2001, 1, 5, 4, 5);
 
-INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists)
-VALUES (1002, 3003, 2004, 2, 1);
+INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists, face_off_wins, face_offs_taken)
+VALUES (1002, 3003, 2004, 2, 1, 1, 4);
 
-INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists)
-VALUES (1003, 3002, 2003, 1, 1);
+INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists, face_off_wins, face_offs_taken)
+VALUES (1003, 3002, 2003, 1, 1, 2, 10);
 
-INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists)
-VALUES (1003, 3003, 2004, 0, 1);
+INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists, face_off_wins, face_offs_taken)
+VALUES (1003, 3003, 2004, 0, 1, 3, 5);
 
-INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists)
-VALUES (1004, 3001, 2001, 2, 1);
+INSERT INTO game_skater_stats (game_id, team_id, player_id, goals, assists, face_off_wins, face_offs_taken)
+VALUES (1004, 3001, 2001, 2, 1, 5, 10);
 

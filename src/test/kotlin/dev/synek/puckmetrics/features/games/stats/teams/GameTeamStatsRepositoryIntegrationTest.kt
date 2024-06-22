@@ -261,5 +261,90 @@ class GameTeamStatsRepositoryIntegrationTest(
             )
         }
     }
+
+    @Nested
+    inner class GetPlayersFaceOffPercentagePerSeason {
+        @Test
+        @Sql("/test-data/empty.sql")
+        fun `returns empty list when no player has taken face offs`() {
+            // Arrange
+            val expectedResult = emptyList<PlayerSeasonGoalsResponse>()
+
+            // Act
+            val result = gameTeamStatsRepository.getPlayersFaceOffPercentagePerSeason()
+
+            // Assert
+            assertAll(
+                { assertThat(result.size).isEqualTo(expectedResult.count()) },
+                { assertThat(result).isEqualTo(expectedResult) },
+            )
+        }
+
+        @Test
+        fun `returns face off stats for each player by season`() {
+            // Arrange
+            val expectedResult = listOf(
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = 2001,
+                    season = "20112012",
+                    firstName = "Jaromir",
+                    lastName = "Jagr",
+                    faceOffWins = 5,
+                    faceOffsTaken = 10,
+                ),
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = 2001,
+                    season = "19981999",
+                    firstName = "Jaromir",
+                    lastName = "Jagr",
+                    faceOffWins = 14,
+                    faceOffsTaken = 20,
+                ),
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = 2002,
+                    season = "19981999",
+                    firstName = "Mario",
+                    lastName = "Lemieux",
+                    faceOffWins = 5,
+                    faceOffsTaken = 10,
+                ),
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = 2004,
+                    season = "19981999",
+                    firstName = "Eric",
+                    lastName = "Lindros",
+                    faceOffWins = 4,
+                    faceOffsTaken = 9,
+                ),
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = 2003,
+                    season = "19981999",
+                    firstName = "Wayne",
+                    lastName = "Gretzky",
+                    faceOffWins = 4,
+                    faceOffsTaken = 13,
+                ),
+            )
+
+            // Act
+            val result = gameTeamStatsRepository.getPlayersFaceOffPercentagePerSeason()
+            val mappedResult = result.map {
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = it.playerId,
+                    season = it.season,
+                    firstName = it.firstName,
+                    lastName = it.lastName,
+                    faceOffWins = it.faceOffWins,
+                    faceOffsTaken = it.faceOffsTaken,
+                )
+            }
+
+            // Assert
+            assertAll(
+                { assertThat(mappedResult.size).isEqualTo(expectedResult.count()) },
+                { assertThat(mappedResult).isEqualTo(expectedResult) },
+            )
+        }
+    }
 }
 
