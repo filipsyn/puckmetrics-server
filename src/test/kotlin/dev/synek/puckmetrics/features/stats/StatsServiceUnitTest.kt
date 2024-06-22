@@ -1,6 +1,7 @@
 package dev.synek.puckmetrics.features.stats
 
 import dev.synek.puckmetrics.contracts.BestCoachInSeasonResponse
+import dev.synek.puckmetrics.contracts.PlayerSeasonAssistsResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonGoalsResponse
 import dev.synek.puckmetrics.features.games.Game
 import dev.synek.puckmetrics.features.games.stats.teams.GameTeamStats
@@ -177,6 +178,107 @@ class StatsServiceUnitTest {
             // Assert
             assertAll(
                 { assertThat(result).isNotNull },
+                { assertThat(result.size).isEqualTo(expectedResult.size) },
+                { assertThat(result).isEqualTo(expectedResult) },
+            )
+        }
+    }
+
+    @Nested
+    inner class GetTopAssisters {
+        @Test
+        fun `throws exception when topPlayersPerSeason is less than 1`() {
+            // Arrange
+            val topPlayersPerSeason = 0
+
+            // Act & Assert
+            assertThrows<IllegalArgumentException> {
+                statsService.getTopAssisters(topPlayersPerSeason)
+            }
+        }
+
+        @Test
+        fun `returns empty list when no players have recorded assists`() {
+            // Arrange
+            val expectedResult = emptyList<PlayerSeasonAssistsProjection>()
+            every { gameTeamStatsRepository.getPlayersAssistsPerSeason() } returns expectedResult
+
+            // Act
+            val result = statsService.getTopAssisters()
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result).isEqualTo(expectedResult) },
+            )
+        }
+
+        @Test
+        fun `returns top three assisters for each season`() {
+            // Arrange
+            val assisters = listOf(
+                PlayerSeasonAssistsProjectionImpl(
+                    playerId = 1001,
+                    season = "20112012",
+                    firstName = "Evgeni",
+                    lastName = "Malkin",
+                    totalAssists = 59,
+                ),
+                PlayerSeasonAssistsProjectionImpl(
+                    playerId = 1002,
+                    season = "20112012",
+                    firstName = "Sidney",
+                    lastName = "Crosby",
+                    totalAssists = 70,
+                ),
+                PlayerSeasonAssistsProjectionImpl(
+                    playerId = 1003,
+                    season = "20112012",
+                    firstName = "Joe",
+                    lastName = "Thornton",
+                    totalAssists = 80,
+                ),
+                PlayerSeasonAssistsProjectionImpl(
+                    playerId = 1004,
+                    season = "20112012",
+                    firstName = "Nicklas",
+                    lastName = "Backstrom",
+                    totalAssists = 90,
+                ),
+            )
+
+            every { gameTeamStatsRepository.getPlayersAssistsPerSeason() } returns assisters
+
+            val expectedResult = listOf(
+                PlayerSeasonAssistsResponse(
+                    playerId = 1004,
+                    season = "20112012",
+                    firstName = "Nicklas",
+                    lastName = "Backstrom",
+                    totalAssists = 90,
+                ),
+                PlayerSeasonAssistsResponse(
+                    playerId = 1003,
+                    season = "20112012",
+                    firstName = "Joe",
+                    lastName = "Thornton",
+                    totalAssists = 80,
+                ),
+                PlayerSeasonAssistsResponse(
+                    playerId = 1002,
+                    season = "20112012",
+                    firstName = "Sidney",
+                    lastName = "Crosby",
+                    totalAssists = 70,
+                ),
+            )
+
+            // Act
+            val result = statsService.getTopAssisters()
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
                 { assertThat(result.size).isEqualTo(expectedResult.size) },
                 { assertThat(result).isEqualTo(expectedResult) },
             )
