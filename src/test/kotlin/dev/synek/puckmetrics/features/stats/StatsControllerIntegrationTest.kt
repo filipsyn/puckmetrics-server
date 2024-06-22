@@ -21,7 +21,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 class StatsControllerIntegrationTest(
     @Autowired private val mockMvc: MockMvc,
 ) : BaseIntegrationTest() {
-    private val baseUrl = StatsEndpointURLs.CONTROLLER_ROOT
+    private val baseUrl = "/${StatsEndpointURLs.CONTROLLER_ROOT}"
 
     @Nested
     inner class GetBestCoaches {
