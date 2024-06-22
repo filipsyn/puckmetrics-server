@@ -56,4 +56,42 @@ class StatsControllerIntegrationTest(
             }
         }
     }
+
+    @Nested
+    inner class GetTopGoalScorers {
+        @Test
+        @Sql("/test-data/empty.sql")
+        fun `returns empty list when no players have scored goals`() {
+            // Act
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_GOAL_SCORERS}")
+
+            // Assert
+            result.andExpect {
+                status { isOk() }
+                content { json("[]") }
+            }
+        }
+
+        @Test
+        fun `returns goal scored by each player in each season`() {
+            // Act
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_GOAL_SCORERS}")
+
+            // Assert
+            result.andExpect {
+                status { isOk() }
+                content { jsonPath("$[0].playerId") { value(2001) } }
+                content { jsonPath("$[0].season") { value("20112012") } }
+                content { jsonPath("$[0].firstName") { value("Jaromir") } }
+                content { jsonPath("$[0].lastName") { value("Jagr") } }
+                content { jsonPath("$[0].totalGoals") { value(2) } }
+
+                content { jsonPath("$[1].playerId") { value(2001) } }
+                content { jsonPath("$[1].season") { value("19981999") } }
+                content { jsonPath("$[1].firstName") { value("Jaromir") } }
+                content { jsonPath("$[1].lastName") { value("Jagr") } }
+                content { jsonPath("$[1].totalGoals") { value(5) } }
+            }
+        }
+    }
 }
