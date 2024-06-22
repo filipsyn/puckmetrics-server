@@ -3,6 +3,7 @@ package dev.synek.puckmetrics.features.games.stats.teams
 import dev.synek.puckmetrics.common.BaseIntegrationTest
 import dev.synek.puckmetrics.contracts.PlayerSeasonAssistsResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonGoalsResponse
+import dev.synek.puckmetrics.contracts.PlayerSeasonPointsResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -171,6 +172,85 @@ class GameTeamStatsRepositoryIntegrationTest(
                     firstName = it.firstName,
                     lastName = it.lastName,
                     totalAssists = it.totalAssists,
+                )
+            }
+
+            // Assert
+            assertAll(
+                { assertThat(mappedResult.size).isEqualTo(expectedResult.count()) },
+                { assertThat(mappedResult).isEqualTo(expectedResult) },
+            )
+        }
+    }
+
+    @Nested
+    inner class GetPlayerPointsPerSeason {
+        @Test
+        @Sql("/test-data/empty.sql")
+        fun `returns empty list when no player has recorded points`() {
+            // Arrange
+            val expectedResult = emptyList<PlayerSeasonGoalsResponse>()
+
+            // Act
+            val result = gameTeamStatsRepository.getPlayersPointsPerSeason()
+
+            // Assert
+            assertAll(
+                { assertThat(result.size).isEqualTo(expectedResult.count()) },
+                { assertThat(result).isEqualTo(expectedResult) },
+            )
+        }
+
+        @Test
+        fun `returns points recorded by each player in each season`() {
+            // Arrange
+            val expectedResult = listOf(
+                PlayerSeasonPointsResponse(
+                    playerId = 2001,
+                    season = "20112012",
+                    firstName = "Jaromir",
+                    lastName = "Jagr",
+                    totalPoints = 3,
+                ),
+                PlayerSeasonPointsResponse(
+                    playerId = 2001,
+                    season = "19981999",
+                    firstName = "Jaromir",
+                    lastName = "Jagr",
+                    totalPoints = 11,
+                ),
+                PlayerSeasonPointsResponse(
+                    playerId = 2004,
+                    season = "19981999",
+                    firstName = "Eric",
+                    lastName = "Lindros",
+                    totalPoints = 4,
+                ),
+                PlayerSeasonPointsResponse(
+                    playerId = 2002,
+                    season = "19981999",
+                    firstName = "Mario",
+                    lastName = "Lemieux",
+                    totalPoints = 4,
+                ),
+                PlayerSeasonPointsResponse(
+                    playerId = 2003,
+                    season = "19981999",
+                    firstName = "Wayne",
+                    lastName = "Gretzky",
+                    totalPoints = 4,
+                ),
+            )
+
+            // Act
+            val result = gameTeamStatsRepository.getPlayersPointsPerSeason()
+            val mappedResult = result.map {
+                PlayerSeasonPointsResponse(
+                    playerId = it.playerId,
+                    season = it.season,
+                    firstName = it.firstName,
+                    lastName = it.lastName,
+                    totalPoints = it.totalPoints,
                 )
             }
 
