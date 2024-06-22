@@ -30,6 +30,7 @@ class StatsService(
                 wins = season.value?.value ?: 0,
             )
         }
+        .sortedWith(compareByDescending { it.season })
 
     fun getTopGoalScorers(topPlayersPerSeason: Int = DEFAULT_TOP_SCORERS_COUNT): List<PlayerSeasonGoalsResponse> {
         require(topPlayersPerSeason >= 1) { INVALID_COUNT_ERROR }
