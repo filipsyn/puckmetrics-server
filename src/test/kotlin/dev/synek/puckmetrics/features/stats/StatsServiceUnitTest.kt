@@ -1,12 +1,10 @@
 package dev.synek.puckmetrics.features.stats
 
-import dev.synek.puckmetrics.contracts.BestCoachInSeasonResponse
-import dev.synek.puckmetrics.contracts.PlayerSeasonAssistsResponse
-import dev.synek.puckmetrics.contracts.PlayerSeasonGoalsResponse
-import dev.synek.puckmetrics.contracts.PlayerSeasonPointsResponse
+import dev.synek.puckmetrics.contracts.*
 import dev.synek.puckmetrics.features.games.Game
 import dev.synek.puckmetrics.features.games.stats.teams.GameTeamStats
 import dev.synek.puckmetrics.features.games.stats.teams.GameTeamStatsRepository
+import dev.synek.puckmetrics.features.games.stats.teams.PlayerSeasonFaceOffProjectionImpl
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -377,6 +375,111 @@ class StatsServiceUnitTest {
 
             // Act
             val result = statsService.getTopPointScorers()
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result.size).isEqualTo(expectedResult.size) },
+                { assertThat(result).isEqualTo(expectedResult) },
+            )
+        }
+    }
+
+    @Nested
+    inner class GetTopFaceOffTakers {
+        @Test
+        fun `throws exception when topPlayersPerSeason is less than 1`() {
+            // Arrange
+            val topPlayersPerSeason = 0
+
+            // Act & Assert
+            assertThrows<IllegalArgumentException> {
+                statsService.getTopFaceOffTakers(topPlayersPerSeason)
+            }
+        }
+
+        @Test
+        fun `returns empty list when no players have recorded face offs`() {
+            // Arrange
+            val expectedResult = emptyList<PlayerSeasonFaceOffProjection>()
+            every { gameTeamStatsRepository.getPlayersFaceOffPercentagePerSeason() } returns expectedResult
+
+            // Act
+            val result = statsService.getTopFaceOffTakers()
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result).isEqualTo(expectedResult) },
+            )
+        }
+
+        @Test
+        fun `returns top three face off takers for each season`() {
+            // Arrange
+            val faceOffTakers = listOf(
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = 1001,
+                    season = "20112012",
+                    firstName = "Evgeni",
+                    lastName = "Malkin",
+                    faceOffsTaken = 200,
+                    faceOffWins = 50,
+                ),
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = 1002,
+                    season = "20112012",
+                    firstName = "Sidney",
+                    lastName = "Crosby",
+                    faceOffsTaken = 200,
+                    faceOffWins = 125,
+                ),
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = 1003,
+                    season = "20112012",
+                    firstName = "Joe",
+                    lastName = "Thornton",
+                    faceOffsTaken = 200,
+                    faceOffWins = 75,
+                ),
+                PlayerSeasonFaceOffProjectionImpl(
+                    playerId = 1004,
+                    season = "20112012",
+                    firstName = "Nicklas",
+                    lastName = "Backstrom",
+                    faceOffsTaken = 500,
+                    faceOffWins = 125,
+                ),
+            )
+
+            every { gameTeamStatsRepository.getPlayersFaceOffPercentagePerSeason() } returns faceOffTakers
+
+            val expectedResult = listOf(
+                PlayerSeasonFaceOffResponse(
+                    playerId = 1002,
+                    season = "20112012",
+                    firstName = "Sidney",
+                    lastName = "Crosby",
+                    faceOffWinPercentage = 62.5,
+                ),
+                PlayerSeasonFaceOffResponse(
+                    playerId = 1003,
+                    season = "20112012",
+                    firstName = "Joe",
+                    lastName = "Thornton",
+                    faceOffWinPercentage = 37.5,
+                ),
+                PlayerSeasonFaceOffResponse(
+                    playerId = 1001,
+                    season = "20112012",
+                    firstName = "Evgeni",
+                    lastName = "Malkin",
+                    faceOffWinPercentage = 25.0,
+                ),
+            )
+
+            // Act
+            val result = statsService.getTopFaceOffTakers()
 
             // Assert
             assertAll(
