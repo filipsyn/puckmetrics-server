@@ -22,6 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 class GameTeamStatsRepositoryIntegrationTest(
     @Autowired private val gameTeamStatsRepository: GameTeamStatsRepository,
 ) : BaseIntegrationTest() {
+
     @Nested
     inner class GetPlayersGoalsPerSeason {
         @Test
