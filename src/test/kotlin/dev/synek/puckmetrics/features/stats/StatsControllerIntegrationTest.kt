@@ -91,6 +91,18 @@ class StatsControllerIntegrationTest(
                 content { jsonPath("$[1].firstName") { value("Jaromir") } }
                 content { jsonPath("$[1].lastName") { value("Jagr") } }
                 content { jsonPath("$[1].totalGoals") { value(5) } }
+
+                content { jsonPath("$[2].playerId") { value(2003) } }
+                content { jsonPath("$[2].season") { value("19981999") } }
+                content { jsonPath("$[2].firstName") { value("Wayne") } }
+                content { jsonPath("$[2].lastName") { value("Gretzky") } }
+                content { jsonPath("$[2].totalGoals") { value(3) } }
+
+                content { jsonPath("$[3].playerId") { value(2004) } }
+                content { jsonPath("$[3].season") { value("19981999") } }
+                content { jsonPath("$[3].firstName") { value("Eric") } }
+                content { jsonPath("$[3].lastName") { value("Lindros") } }
+                content { jsonPath("$[3].totalGoals") { value(2) } }
             }
         }
     }
