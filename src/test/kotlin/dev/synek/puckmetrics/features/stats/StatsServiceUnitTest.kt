@@ -3,6 +3,7 @@ package dev.synek.puckmetrics.features.stats
 import dev.synek.puckmetrics.contracts.BestCoachInSeasonResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonAssistsResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonGoalsResponse
+import dev.synek.puckmetrics.contracts.PlayerSeasonPointsResponse
 import dev.synek.puckmetrics.features.games.Game
 import dev.synek.puckmetrics.features.games.stats.teams.GameTeamStats
 import dev.synek.puckmetrics.features.games.stats.teams.GameTeamStatsRepository
@@ -275,6 +276,107 @@ class StatsServiceUnitTest {
 
             // Act
             val result = statsService.getTopAssisters()
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result.size).isEqualTo(expectedResult.size) },
+                { assertThat(result).isEqualTo(expectedResult) },
+            )
+        }
+    }
+
+    @Nested
+    inner class GetTopPointScorers {
+        @Test
+        fun `throws exception when topPlayersPerSeason is less than 1`() {
+            // Arrange
+            val topPlayersPerSeason = 0
+
+            // Act & Assert
+            assertThrows<IllegalArgumentException> {
+                statsService.getTopPointScorers(topPlayersPerSeason)
+            }
+        }
+
+        @Test
+        fun `returns empty list when no players have recorded points`() {
+            // Arrange
+            val expectedResult = emptyList<PlayerSeasonPointsProjection>()
+            every { gameTeamStatsRepository.getPlayersPointsPerSeason() } returns expectedResult
+
+            // Act
+            val result = statsService.getTopPointScorers()
+
+            // Assert
+            assertAll(
+                { assertThat(result).isNotNull() },
+                { assertThat(result).isEqualTo(expectedResult) },
+            )
+        }
+
+        @Test
+        fun `returns top three point scorers for each season`() {
+            // Arrange
+            val pointScorers = listOf(
+                PlayerSeasonPointsProjectionImpl(
+                    playerId = 1001,
+                    season = "20112012",
+                    firstName = "Evgeni",
+                    lastName = "Malkin",
+                    totalPoints = 109,
+                ),
+                PlayerSeasonPointsProjectionImpl(
+                    playerId = 1002,
+                    season = "20112012",
+                    firstName = "Sidney",
+                    lastName = "Crosby",
+                    totalPoints = 120,
+                ),
+                PlayerSeasonPointsProjectionImpl(
+                    playerId = 1003,
+                    season = "20112012",
+                    firstName = "Joe",
+                    lastName = "Thornton",
+                    totalPoints = 100,
+                ),
+                PlayerSeasonPointsProjectionImpl(
+                    playerId = 1004,
+                    season = "20112012",
+                    firstName = "Nicklas",
+                    lastName = "Backstrom",
+                    totalPoints = 130,
+                ),
+            )
+
+            every { gameTeamStatsRepository.getPlayersPointsPerSeason() } returns pointScorers
+
+            val expectedResult = listOf(
+                PlayerSeasonPointsResponse(
+                    playerId = 1004,
+                    season = "20112012",
+                    firstName = "Nicklas",
+                    lastName = "Backstrom",
+                    totalPoints = 130,
+                ),
+                PlayerSeasonPointsResponse(
+                    playerId = 1002,
+                    season = "20112012",
+                    firstName = "Sidney",
+                    lastName = "Crosby",
+                    totalPoints = 120,
+                ),
+                PlayerSeasonPointsResponse(
+                    playerId = 1001,
+                    season = "20112012",
+                    firstName = "Evgeni",
+                    lastName = "Malkin",
+                    totalPoints = 109,
+                ),
+            )
+
+            // Act
+            val result = statsService.getTopPointScorers()
 
             // Assert
             assertAll(
