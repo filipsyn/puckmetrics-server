@@ -206,4 +206,54 @@ class StatsControllerIntegrationTest(
             }
         }
     }
+
+    @Nested
+    inner class GetTopFaceOffTakers {
+        @Test
+        @Sql("/test-data/empty.sql")
+        fun `returns empty list when no players have taken face-offs`() {
+            // Act
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_FACE_OFF_TAKERS}")
+
+            // Assert
+            result.andExpect {
+                status { isOk() }
+                content { json("[]") }
+            }
+        }
+
+        @Test
+        fun `returns face-offs taken by each player in each season`() {
+            // Act
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_FACE_OFF_TAKERS}")
+
+            // Assert
+            result.andExpect {
+                status { isOk() }
+                content { jsonPath("$[0].playerId") { value(2001) } }
+                content { jsonPath("$[0].season") { value("20112012") } }
+                content { jsonPath("$[0].firstName") { value("Jaromir") } }
+                content { jsonPath("$[0].lastName") { value("Jagr") } }
+                content { jsonPath("$[0].faceOffWinPercentage") { value(50.0) } }
+
+                content { jsonPath("$[1].playerId") { value(2001) } }
+                content { jsonPath("$[1].season") { value("19981999") } }
+                content { jsonPath("$[1].firstName") { value("Jaromir") } }
+                content { jsonPath("$[1].lastName") { value("Jagr") } }
+                content { jsonPath("$[1].faceOffWinPercentage") { value(70.0) } }
+
+                content { jsonPath("$[2].playerId") { value(2002) } }
+                content { jsonPath("$[2].season") { value("19981999") } }
+                content { jsonPath("$[2].firstName") { value("Mario") } }
+                content { jsonPath("$[2].lastName") { value("Lemieux") } }
+                content { jsonPath("$[2].faceOffWinPercentage") { value(50.0) } }
+
+                content { jsonPath("$[3].playerId") { value(2004) } }
+                content { jsonPath("$[3].season") { value("19981999") } }
+                content { jsonPath("$[3].firstName") { value("Eric") } }
+                content { jsonPath("$[3].lastName") { value("Lindros") } }
+                content { jsonPath("$[3].faceOffWinPercentage") { value(44.4) } }
+            }
+        }
+    }
 }
