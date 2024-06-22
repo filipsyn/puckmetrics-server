@@ -144,4 +144,54 @@ class StatsControllerIntegrationTest(
             }
         }
     }
+
+    @Nested
+    inner class GetTopPointScorers {
+        @Test
+        @Sql("/test-data/empty.sql")
+        fun `returns empty list when no players have scored points`() {
+            // Act
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_POINT_SCORERS}")
+
+            // Assert
+            result.andExpect {
+                status { isOk() }
+                content { json("[]") }
+            }
+        }
+
+        @Test
+        fun `returns points scored by each player in each season`() {
+            // Act
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_POINT_SCORERS}")
+
+            // Assert
+            result.andExpect {
+                status { isOk() }
+                content { jsonPath("$[0].playerId") { value(2001) } }
+                content { jsonPath("$[0].season") { value("20112012") } }
+                content { jsonPath("$[0].firstName") { value("Jaromir") } }
+                content { jsonPath("$[0].lastName") { value("Jagr") } }
+                content { jsonPath("$[0].totalPoints") { value(3) } }
+
+                content { jsonPath("$[1].playerId") { value(2001) } }
+                content { jsonPath("$[1].season") { value("19981999") } }
+                content { jsonPath("$[1].firstName") { value("Jaromir") } }
+                content { jsonPath("$[1].lastName") { value("Jagr") } }
+                content { jsonPath("$[1].totalPoints") { value(11) } }
+
+                content { jsonPath("$[2].playerId") { value(2004) } }
+                content { jsonPath("$[2].season") { value("19981999") } }
+                content { jsonPath("$[2].firstName") { value("Eric") } }
+                content { jsonPath("$[2].lastName") { value("Lindros") } }
+                content { jsonPath("$[2].totalPoints") { value(4) } }
+
+                content { jsonPath("$[3].playerId") { value(2002) } }
+                content { jsonPath("$[3].season") { value("19981999") } }
+                content { jsonPath("$[3].firstName") { value("Mario") } }
+                content { jsonPath("$[3].lastName") { value("Lemieux") } }
+                content { jsonPath("$[3].totalPoints") { value(4) } }
+            }
+        }
+    }
 }
