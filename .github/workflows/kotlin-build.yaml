@@ -4,6 +4,9 @@ jobs:
   kotlin-build:
     name: Build Project
     runs-on: ubuntu-22.04
+    permissions:
+      checks: write
+      pull-requests: write
     steps:
       - name: Check-out code
         uses: actions/checkout@v4
@@ -19,3 +22,17 @@ jobs:
         env:
           SPRING_PROFILES_ACTIVE: ci
         run: ./gradlew build --no-daemon
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: build/test-results/**/*.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: '**/test-results/**/*.xml'
+          comment_mode: off
