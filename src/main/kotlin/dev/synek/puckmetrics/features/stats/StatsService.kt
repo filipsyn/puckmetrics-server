@@ -2,6 +2,7 @@ package dev.synek.puckmetrics.features.stats
 
 import dev.synek.puckmetrics.contracts.*
 import dev.synek.puckmetrics.features.games.stats.teams.GameTeamStatsRepository
+import dev.synek.puckmetrics.shared.Constants.Player.DEFAULT_MINIMUM_FACE_OFFS_TAKEN
 import dev.synek.puckmetrics.shared.Constants.Player.DEFAULT_TOP_ASSISTERS_COUNT
 import dev.synek.puckmetrics.shared.Constants.Player.DEFAULT_TOP_FACE_OFF_TAKERS_COUNT
 import dev.synek.puckmetrics.shared.Constants.Player.DEFAULT_TOP_SCORERS_COUNT
@@ -74,11 +75,15 @@ class StatsService(
     }
 
     fun getTopFaceOffTakers(
-        topPlayersPerSeason: Int = DEFAULT_TOP_FACE_OFF_TAKERS_COUNT
+        topPlayersPerSeason: Int = DEFAULT_TOP_FACE_OFF_TAKERS_COUNT,
+        faceOffsTakenThreshold: Int = DEFAULT_MINIMUM_FACE_OFFS_TAKEN
     ): List<PlayerSeasonFaceOffResponse> {
         require(topPlayersPerSeason >= 1) { INVALID_COUNT_ERROR }
 
-        return gameTeamStatsRepository.getPlayersFaceOffPercentagePerSeason()
+        return gameTeamStatsRepository.getPlayersFaceOffPercentagePerSeason(
+            topPlayersPerSeason = topPlayersPerSeason,
+            faceOffsTakenThreshold = faceOffsTakenThreshold,
+        )
             .groupBy { it.season }
             .flatMap { (_, players) ->
                 players.sortedByDescending { projection ->

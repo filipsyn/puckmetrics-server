@@ -234,25 +234,25 @@ class StatsControllerIntegrationTest(
                 content { jsonPath("$[0].season") { value("20112012") } }
                 content { jsonPath("$[0].firstName") { value("Jaromir") } }
                 content { jsonPath("$[0].lastName") { value("Jagr") } }
-                content { jsonPath("$[0].faceOffWinPercentage") { value(50.0) } }
+                content { jsonPath("$[0].faceOffWinPercentage") { value(40.0) } }
 
-                content { jsonPath("$[1].playerId") { value(2001) } }
+                content { jsonPath("$[1].playerId") { value(2004) } }
                 content { jsonPath("$[1].season") { value("19981999") } }
-                content { jsonPath("$[1].firstName") { value("Jaromir") } }
-                content { jsonPath("$[1].lastName") { value("Jagr") } }
-                content { jsonPath("$[1].faceOffWinPercentage") { value(70.0) } }
+                content { jsonPath("$[1].firstName") { value("Eric") } }
+                content { jsonPath("$[1].lastName") { value("Lindros") } }
+                content { jsonPath("$[1].faceOffWinPercentage") { value(61.5) } }
 
-                content { jsonPath("$[2].playerId") { value(2002) } }
+                content { jsonPath("$[2].playerId") { value(2001) } }
                 content { jsonPath("$[2].season") { value("19981999") } }
-                content { jsonPath("$[2].firstName") { value("Mario") } }
-                content { jsonPath("$[2].lastName") { value("Lemieux") } }
-                content { jsonPath("$[2].faceOffWinPercentage") { value(50.0) } }
+                content { jsonPath("$[2].firstName") { value("Jaromir") } }
+                content { jsonPath("$[2].lastName") { value("Jagr") } }
+                content { jsonPath("$[2].faceOffWinPercentage") { value(48.0) } }
 
-                content { jsonPath("$[3].playerId") { value(2004) } }
+                content { jsonPath("$[3].playerId") { value(2003) } }
                 content { jsonPath("$[3].season") { value("19981999") } }
-                content { jsonPath("$[3].firstName") { value("Eric") } }
-                content { jsonPath("$[3].lastName") { value("Lindros") } }
-                content { jsonPath("$[3].faceOffWinPercentage") { value(44.4) } }
+                content { jsonPath("$[3].firstName") { value("Wayne") } }
+                content { jsonPath("$[3].lastName") { value("Gretzky") } }
+                content { jsonPath("$[3].faceOffWinPercentage") { value(48.0) } }
             }
         }
     }

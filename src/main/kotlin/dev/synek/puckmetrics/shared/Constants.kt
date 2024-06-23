@@ -11,5 +11,6 @@ object Constants {
         const val DEFAULT_TOP_SCORERS_COUNT = 3
         const val DEFAULT_TOP_ASSISTERS_COUNT = 3
         const val DEFAULT_TOP_FACE_OFF_TAKERS_COUNT = 3
+        const val DEFAULT_MINIMUM_FACE_OFFS_TAKEN = 1000
     }
 }
