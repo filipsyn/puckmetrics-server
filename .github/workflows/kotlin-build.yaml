@@ -19,3 +19,16 @@ jobs:
         env:
           SPRING_PROFILES_ACTIVE: ci
         run: ./gradlew build --no-daemon
+
+      - name: Upload test results
+        uses: actions/upload-test-results@v1
+        if: always()
+        with:
+          path: build/test-results/**/*.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            test-results/**/*.xml
