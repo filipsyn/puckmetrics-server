@@ -1,9 +1,10 @@
 package dev.synek.puckmetrics.features.games.stats.teams
 
 import dev.synek.puckmetrics.common.BaseIntegrationTest
-import dev.synek.puckmetrics.contracts.PlayerSeasonAssistsResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonGoalsResponse
 import dev.synek.puckmetrics.contracts.PlayerSeasonPointsResponse
+import dev.synek.puckmetrics.features.stats.PlayerSeasonAssistsProjectionImpl
+import dev.synek.puckmetrics.features.stats.PlayerSeasonGoalsProjectionImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -47,35 +48,35 @@ class GameTeamStatsRepositoryIntegrationTest(
         fun `returns goal scored by each player in each season`() {
             // Arrange
             val expectedResult = listOf(
-                PlayerSeasonGoalsResponse(
+                PlayerSeasonGoalsProjectionImpl(
                     playerId = 2001,
                     season = "20112012",
                     firstName = "Jaromir",
                     lastName = "Jagr",
                     totalGoals = 2,
                 ),
-                PlayerSeasonGoalsResponse(
+                PlayerSeasonGoalsProjectionImpl(
                     playerId = 2001,
                     season = "19981999",
                     firstName = "Jaromir",
                     lastName = "Jagr",
                     totalGoals = 5,
                 ),
-                PlayerSeasonGoalsResponse(
+                PlayerSeasonGoalsProjectionImpl(
                     playerId = 2003,
                     season = "19981999",
                     firstName = "Wayne",
                     lastName = "Gretzky",
                     totalGoals = 3,
                 ),
-                PlayerSeasonGoalsResponse(
+                PlayerSeasonGoalsProjectionImpl(
                     playerId = 2004,
                     season = "19981999",
                     firstName = "Eric",
                     lastName = "Lindros",
                     totalGoals = 2,
                 ),
-                PlayerSeasonGoalsResponse(
+                PlayerSeasonGoalsProjectionImpl(
                     playerId = 2002,
                     season = "19981999",
                     firstName = "Mario",
@@ -87,7 +88,7 @@ class GameTeamStatsRepositoryIntegrationTest(
             // Act
             val result = gameTeamStatsRepository.getPlayersGoalsPerSeason()
             val mappedResult = result.map {
-                PlayerSeasonGoalsResponse(
+                PlayerSeasonGoalsProjectionImpl(
                     playerId = it.playerId,
                     season = it.season,
                     firstName = it.firstName,
@@ -126,35 +127,35 @@ class GameTeamStatsRepositoryIntegrationTest(
         fun `returns assists recorded by each player in each season`() {
             // Arrange
             val expectedResult = listOf(
-                PlayerSeasonAssistsResponse(
+                PlayerSeasonAssistsProjectionImpl(
                     playerId = 2001,
                     season = "20112012",
                     firstName = "Jaromir",
                     lastName = "Jagr",
                     totalAssists = 1,
                 ),
-                PlayerSeasonAssistsResponse(
+                PlayerSeasonAssistsProjectionImpl(
                     playerId = 2001,
                     season = "19981999",
                     firstName = "Jaromir",
                     lastName = "Jagr",
                     totalAssists = 6,
                 ),
-                PlayerSeasonAssistsResponse(
+                PlayerSeasonAssistsProjectionImpl(
                     playerId = 2002,
                     season = "19981999",
                     firstName = "Mario",
                     lastName = "Lemieux",
                     totalAssists = 3,
                 ),
-                PlayerSeasonAssistsResponse(
+                PlayerSeasonAssistsProjectionImpl(
                     playerId = 2004,
                     season = "19981999",
                     firstName = "Eric",
                     lastName = "Lindros",
                     totalAssists = 2,
                 ),
-                PlayerSeasonAssistsResponse(
+                PlayerSeasonAssistsProjectionImpl(
                     playerId = 2003,
                     season = "19981999",
                     firstName = "Wayne",
@@ -166,7 +167,7 @@ class GameTeamStatsRepositoryIntegrationTest(
             // Act
             val result = gameTeamStatsRepository.getPlayersAssistsPerSeason()
             val mappedResult = result.map {
-                PlayerSeasonAssistsResponse(
+                PlayerSeasonAssistsProjectionImpl(
                     playerId = it.playerId,
                     season = it.season,
                     firstName = it.firstName,
