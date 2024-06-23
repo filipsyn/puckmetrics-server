@@ -3,6 +3,9 @@ package dev.synek.puckmetrics.features.teams
 import dev.synek.puckmetrics.contracts.CreateUpdateTeamRequest
 import dev.synek.puckmetrics.contracts.TeamInfoResponse
 import dev.synek.puckmetrics.shared.ControllerConstants.APPLICATION_JSON
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -14,6 +17,12 @@ import java.net.URI
 class TeamsController(
     private val teamsService: TeamsService,
 ) {
+    @Operation(summary = "List all teams", description = "Lists all teams in the system.")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Teams were successfully retrieved.")
+        ]
+    )
     @GetMapping(TeamsEndpointURLs.GET_ALL_TEAMS, produces = [APPLICATION_JSON])
     fun getAllTeams(
         pageable: Pageable
