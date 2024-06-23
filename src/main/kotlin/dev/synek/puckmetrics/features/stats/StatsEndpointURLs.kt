@@ -1,15 +1,15 @@
 package dev.synek.puckmetrics.features.stats
 
 object StatsEndpointURLs {
-    const val CONTROLLER_ROOT = "stats"
+    const val CONTROLLER_ROOT = "stats/best"
 
-    const val BEST_COACHES = "best-coaches"
+    const val GET_TOP_COACHES = "coaches"
 
-    const val TOP_GOAL_SCORERS = "top-goal-scorers"
+    const val GET_TOP_GOAL_SCORERS = "goal-scorers"
 
-    const val TOP_ASSISTERS = "top-assisters"
+    const val GET_TOP_ASSISTERS = "assisters"
 
-    const val TOP_POINT_SCORERS = "top-point-scorers"
+    const val GET_TOP_POINT_SCORERS = "point-scorers"
 
-    const val TOP_FACE_OFF_TAKERS = "top-face-off-takers"
+    const val GET_TOP_FACE_OFF_TAKERS = "face-off-takers"
 }

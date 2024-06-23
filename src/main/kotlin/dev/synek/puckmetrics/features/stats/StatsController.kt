@@ -13,7 +13,7 @@ class StatsController(
     @Autowired private val statsService: StatsService,
 ) {
     @GetMapping(
-        StatsEndpointURLs.BEST_COACHES,
+        StatsEndpointURLs.GET_TOP_COACHES,
         produces = [APPLICATION_JSON]
     )
     fun getBestCoaches(): List<BestCoachInSeasonResponse> =
@@ -21,7 +21,7 @@ class StatsController(
 
 
     @GetMapping(
-        StatsEndpointURLs.TOP_GOAL_SCORERS,
+        StatsEndpointURLs.GET_TOP_GOAL_SCORERS,
         produces = [APPLICATION_JSON]
     )
     fun getTopGoalScorers(): List<PlayerSeasonGoalsResponse> =
@@ -29,21 +29,21 @@ class StatsController(
 
 
     @GetMapping(
-        StatsEndpointURLs.TOP_ASSISTERS,
+        StatsEndpointURLs.GET_TOP_ASSISTERS,
         produces = [APPLICATION_JSON]
     )
     fun getTopAssisters(): List<PlayerSeasonAssistsResponse> =
         statsService.getTopAssisters()
 
     @GetMapping(
-        StatsEndpointURLs.TOP_POINT_SCORERS,
+        StatsEndpointURLs.GET_TOP_POINT_SCORERS,
         produces = [APPLICATION_JSON]
     )
     fun getTopPoints(): List<PlayerSeasonPointsResponse> =
         statsService.getTopPointScorers()
 
     @GetMapping(
-        StatsEndpointURLs.TOP_FACE_OFF_TAKERS,
+        StatsEndpointURLs.GET_TOP_FACE_OFF_TAKERS,
         produces = [APPLICATION_JSON]
     )
     fun getTopFaceOffTakers(): List<PlayerSeasonFaceOffResponse> =

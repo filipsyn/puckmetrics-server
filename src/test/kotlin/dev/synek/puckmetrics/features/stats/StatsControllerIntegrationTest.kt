@@ -29,7 +29,7 @@ class StatsControllerIntegrationTest(
         @Sql("/test-data/empty.sql")
         fun `returns empty list when no coaches are present`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.BEST_COACHES}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_COACHES}")
 
             // Assert
             result.andExpect {
@@ -41,7 +41,7 @@ class StatsControllerIntegrationTest(
         @Test
         fun `returns best coach in each season`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.BEST_COACHES}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_COACHES}")
 
             // Assert
             result.andExpect {
@@ -63,7 +63,7 @@ class StatsControllerIntegrationTest(
         @Sql("/test-data/empty.sql")
         fun `returns empty list when no players have scored goals`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_GOAL_SCORERS}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_GOAL_SCORERS}")
 
             // Assert
             result.andExpect {
@@ -75,7 +75,7 @@ class StatsControllerIntegrationTest(
         @Test
         fun `returns goal scored by each player in each season`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_GOAL_SCORERS}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_GOAL_SCORERS}")
 
             // Assert
             result.andExpect {
@@ -113,7 +113,7 @@ class StatsControllerIntegrationTest(
         @Sql("/test-data/empty.sql")
         fun `returns empty list when no players have assists`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_ASSISTERS}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_ASSISTERS}")
 
             // Assert
             result.andExpect {
@@ -125,7 +125,7 @@ class StatsControllerIntegrationTest(
         @Test
         fun `returns assists made by each player in each season`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_ASSISTERS}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_ASSISTERS}")
 
             // Assert
             result.andExpect {
@@ -163,7 +163,7 @@ class StatsControllerIntegrationTest(
         @Sql("/test-data/empty.sql")
         fun `returns empty list when no players have scored points`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_POINT_SCORERS}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_POINT_SCORERS}")
 
             // Assert
             result.andExpect {
@@ -175,7 +175,7 @@ class StatsControllerIntegrationTest(
         @Test
         fun `returns points scored by each player in each season`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_POINT_SCORERS}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_POINT_SCORERS}")
 
             // Assert
             result.andExpect {
@@ -213,7 +213,7 @@ class StatsControllerIntegrationTest(
         @Sql("/test-data/empty.sql")
         fun `returns empty list when no players have taken face-offs`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_FACE_OFF_TAKERS}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_FACE_OFF_TAKERS}")
 
             // Assert
             result.andExpect {
@@ -225,7 +225,7 @@ class StatsControllerIntegrationTest(
         @Test
         fun `returns face-offs taken by each player in each season`() {
             // Act
-            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.TOP_FACE_OFF_TAKERS}")
+            val result = mockMvc.get("$baseUrl/${StatsEndpointURLs.GET_TOP_FACE_OFF_TAKERS}")
 
             // Assert
             result.andExpect {
