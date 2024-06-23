@@ -35,9 +35,3 @@ jobs:
         if: always()
         with:
           files: '**/test-results/**/*.xml'
-
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v4
-        if: success() || failure()
-        with:
-          report_paths: '**/build/test-results/test/TEST-*.xml'
