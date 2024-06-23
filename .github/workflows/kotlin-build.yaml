@@ -35,4 +35,4 @@ jobs:
         if: always()
         with:
           files: '**/test-results/**/*.xml'
-          comment-mode: off
+          comment_mode: off
