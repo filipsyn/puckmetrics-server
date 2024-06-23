@@ -9,6 +9,10 @@ jobs:
   build:
     name: Build
     uses: ./.github/workflows/kotlin-build.yaml
+    permissions:
+      checks: write
+      pull-requests: write
+
 
   mirror:
     name: Mirror
